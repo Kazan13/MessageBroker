@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    justify-content: right;
+    height: 15vh;
+    width: 70vw;
+    margin: 0 auto;
+    border: 0.1em solid #5b5b5b;
+
+}
+
+.header h2 {
+    font: 5vh "Century Gothic", Futura, sans-serif;
+    margin-left: 5vw;
+    margin-top: 5vh;
+}
+
+.addChannelButton {
+    border: 0.1em solid #5b5b5b;
+    margin-right: auto;
+}

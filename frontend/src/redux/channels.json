@@ -1,0 +1,36 @@
+{
+  "channels": [
+    {
+      "id": "0",
+      "channel_name": "first"
+    },
+    {
+      "id": "1",
+      "channel_name": "second"
+    },
+    {
+      "id": "2",
+      "channel_name": "third"
+    },
+    {
+      "id": "3",
+      "channel_name": "fourth"
+    },
+    {
+      "id": "4",
+      "channel_name": "fifth"
+    },
+    {
+      "id": "5",
+      "channel_name": "sixth"
+    },
+    {
+      "id": "6",
+      "channel_name": "seventh"
+    },
+    {
+      "id": "7",
+      "channel_name": "eighth"
+    }
+  ]
+}

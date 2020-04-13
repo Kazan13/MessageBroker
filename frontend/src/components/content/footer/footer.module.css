@@ -1,0 +1,9 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    height: 5vh;
+    width: 70vw;
+    margin: 0 auto;
+    border: 0.1em solid #5b5b5b;
+    font: 2vh "Century Gothic", Futura, sans-serif;
+}

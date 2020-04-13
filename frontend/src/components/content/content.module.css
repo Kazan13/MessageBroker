@@ -1,0 +1,9 @@
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70vw;
+    height: 80vh;
+    margin: 0 auto;
+    border: 0.1em solid #5b5b5b;
+}

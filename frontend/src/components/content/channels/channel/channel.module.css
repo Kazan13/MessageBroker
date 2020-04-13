@@ -1,0 +1,22 @@
+.channel {
+    display: flex;
+    flex-direction: row;
+    border: 0.1em solid #5b5b5b;
+    width: 100%;
+}
+
+.channel:hover {
+    cursor: pointer;
+}
+
+
+.channelName {
+    font: 1em "Century Gothic", Futura, sans-serif;
+}
+
+
+
+.img {
+    /*background-color: white;*/
+    /*border-radius: 50px;*/
+}

@@ -1,0 +1,15 @@
+.dialog {
+    display: flex;
+    justify-content: center;
+    width: 70vw;
+    border: 0.1em solid #5b5b5b;
+}
+
+.messages {
+    width: 50vw;
+    height: 60vh;
+    padding: 0.5vw;
+    margin: 0.5vw;
+    border: 0.1em solid #5b5b5b;
+    border-radius: 1em;
+}
