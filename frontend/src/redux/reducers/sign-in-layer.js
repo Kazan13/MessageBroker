@@ -3,10 +3,10 @@ const initialState = true;
 export default function signInLayer(state = initialState, action) {
     switch (action.type) {
         case 'SHOW_SIGN_IN_LAYER': {
-            return true
+            return true;
         }
         case 'HIDE_SIGN_IN_LAYER': {
-            return false
+            return false;
         }
         default: {
             return state;

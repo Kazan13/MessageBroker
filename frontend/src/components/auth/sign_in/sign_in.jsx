@@ -35,6 +35,9 @@ class SignIn extends Component {
             username: this.username.value,
             password: this.password.value,
         };
+        this.password.value = '';
+        this.username.value = '';
+
         this.signIn(user);
     }
 
@@ -50,7 +53,6 @@ class SignIn extends Component {
                             <input
                                 type="text"
                                 placeholder="username"
-                                value={this.username}
                                 ref={(input => {
                                     this.username = input
                                 })}
@@ -60,7 +62,6 @@ class SignIn extends Component {
                             <input
                                 type="password"
                                 placeholder="password"
-                                value={this.password}
                                 ref={(input => {
                                     this.password = input
                                 })}
