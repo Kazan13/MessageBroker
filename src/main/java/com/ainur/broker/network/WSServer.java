@@ -1,6 +1,6 @@
 package com.ainur.broker.network;
 
-import com.ainur.broker.model.messages.Message;
+import com.ainur.broker.models.message.Message;
 import com.ainur.broker.storages.MessagesStorage;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;
@@ -30,12 +30,12 @@ public class WSServer {
             WebSocketServer webSocketServer = new WebSocketServer(new InetSocketAddress(HOST, PORT)) {
                 @Override
                 public void onOpen(WebSocket conn, ClientHandshake handshake) {
-                    log.info("Соединение установлено с "	+ conn.getRemoteSocketAddress());
+                    log.info("Connection opened: "	+ conn.getRemoteSocketAddress());
                 }
 
                 @Override
                 public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-                    log.info("Соединение закрыто");
+                    log.info("Connection closed: " + conn.getRemoteSocketAddress());
                 }
 
                 @Override
@@ -57,7 +57,7 @@ public class WSServer {
     }
 
     public void addMessage(Message message, WebSocket socket) {
-        log.info("Метод addMessage");
+        log.info("The message is received from conn.getRemoteSocketAddress()");
         if (message.getToken() != null &&
                 TokensStorage.getTokenStorage().isTokenValid(message.getToken())) {
             WebSocketsStorage.getWebSocketsStorage().addSocket(

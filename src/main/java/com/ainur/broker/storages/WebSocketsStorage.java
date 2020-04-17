@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class WebSocketsStorage {
-    private ConcurrentHashMap<String, WebSocket> sockets;
+    private ConcurrentHashMap<Integer, WebSocket> sockets;
     private static WebSocketsStorage webSocketsStorage;
 
 
@@ -23,19 +23,19 @@ public class WebSocketsStorage {
     }
 
 
-    public boolean addSocket(String id, WebSocket socket) {
+    public boolean addSocket(int id, WebSocket socket) {
         if (sockets.containsKey(id))
             return false;
         sockets.put(id, socket);
         return true;
     }
 
-    public WebSocket getSocket(String id) {
+    public WebSocket getSocket(int id) {
         return sockets.get(id);
 
     }
 
-    public void removeSocket(String id) {
+    public void removeSocket(int id) {
         sockets.remove(id);
     }
 

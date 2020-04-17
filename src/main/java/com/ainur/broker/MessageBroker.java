@@ -1,10 +1,10 @@
-package com.ainur;
+package com.ainur.broker;
 
-import com.ainur.models.message.data.MessagePocket;
-import com.ainur.models.message.data.Publish;
-import com.ainur.repository.MySQLRepository;
-import com.ainur.storages.TokensStorage;
-import com.ainur.storages.WebSocketsStorage;
+import com.ainur.broker.models.message.data.MessagePocket;
+import com.ainur.broker.models.message.data.Publish;
+import com.ainur.broker.repository.MySQLRepository;
+import com.ainur.broker.storages.TokensStorage;
+import com.ainur.broker.storages.WebSocketsStorage;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 

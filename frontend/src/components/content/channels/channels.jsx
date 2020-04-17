@@ -6,8 +6,8 @@ class Channels extends Component {
     render() {
         return (
             <div className={styles.channels}>
-                {this.props.channels.map(channel => (
-                    <Channel channel={channel} />
+                {this.props.channels.map((channel, index) => (
+                    <Channel key={index} channel={channel} />
                 ))}
             </div>
         )

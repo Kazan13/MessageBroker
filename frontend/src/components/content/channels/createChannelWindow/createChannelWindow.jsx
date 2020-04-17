@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import styles from "./createChannelWindow.module.css"
+import {connect} from "react-redux";
 
 class CreateChannelWindow extends Component {
     constructor(props) {
@@ -39,7 +40,8 @@ class CreateChannelWindow extends Component {
     }
 
     render() {
-        let windowVisibleStile = this.props.window ? {display: 'flex'} : {display: 'none'};
+        console.log(this.props.state)
+        let windowVisibleStile = this.props.createChannelWindow ? {display: 'flex'} : {display: 'none'};
         return (
             <div style={windowVisibleStile}
                  className={styles.layer}>
@@ -47,9 +49,9 @@ class CreateChannelWindow extends Component {
                     <div className={styles.titleContainer}>
                         <div className={styles.title}>Create new channel</div>
                         <div className={styles.closeButton}
-                             onClick={() => {
-                                 this.props.dataController.hideNewChannelWindow();
-                             }}>X
+                             onClick={
+                                 this.props.onCreateChannelWindow
+                             }>X
                         </div>
                     </div>
 
@@ -68,4 +70,11 @@ class CreateChannelWindow extends Component {
     }
 }
 
-export default CreateChannelWindow;
+export default connect(
+    state => ({createChannelWindow: state.createChannelWindow}),
+    dispatch => ({
+        onCreateChannelWindow: () => {
+            dispatch({type: 'HIDE_CREATE_CHANNEL_WINDOW', payload: false})
+        },
+    })
+)(CreateChannelWindow);

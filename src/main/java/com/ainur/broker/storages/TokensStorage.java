@@ -3,11 +3,8 @@ package com.ainur.broker.storages;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TokensStorage {
-
-
-    private ConcurrentHashMap<String, String> tokens;
+    private ConcurrentHashMap<String, Integer> tokens;
     private static TokensStorage tokensStorage;
-
     private TokensStorage() {
         tokens = new ConcurrentHashMap<>();
     }
@@ -19,12 +16,11 @@ public class TokensStorage {
         return tokensStorage;
     }
 
-
     public boolean isTokenValid(String token) {
         return tokens.containsKey(token);
     }
 
-    public boolean addToken(String token, String id) {
+    public boolean addToken(String token, int id) {
         if (tokens.containsKey(token))
             return false;
         tokens.put(token, id);
@@ -35,7 +31,7 @@ public class TokensStorage {
         tokens.remove(token);
     }
 
-    public String getUserId(String token) {
+    public int getUserId(String token) {
         return tokens.get(token);
     }
 }

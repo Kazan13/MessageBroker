@@ -22,7 +22,7 @@ class DataController {
         let createChannelMessage = {
             token: this.state.token,
             command: 'GET_CHANNELS',
-            data:''
+            data: ''
         }
         sendMessage(createChannelMessage)
     }
@@ -67,29 +67,31 @@ class DataController {
     }
 
     async signIn(user) {
-        await signIn(user).then(response => response.json())
-            .then(json => {
-                if (json.token !== null) {
-                    this.state = {
-                        ...this.state,
-                        token: json.token,
-                        signInLayer: false,
-                        messenger: true
-                    }
-                    this.app.onTokenChange({
-                        token: this.state.token
-                    });
-                    this.app.onSignInLayerChange({
-                        signInLayer: this.state.signInLayer
-                    });
-                    this.app.onMessengerChange({
-                        messenger: this.state.messenger
-                    });
-                } else{
-                    alert("Не удалось войти")
-                }
-            })
-            .catch(err => console.log(err));
+        await signIn(user).then(response => {
+            if (response.ok)
+                return response.json();
+            else
+                throw new Error('unauthorized')
+        }).then(json => {
+            this.state = {
+                ...this.state,
+                token: json.token,
+                signInLayer: false,
+                messenger: true
+            }
+            this.app.onTokenChange({
+                token: this.state.token
+            });
+            this.app.onSignInLayerChange({
+                signInLayer: this.state.signInLayer
+            });
+            this.app.onMessengerChange({
+                messenger: this.state.messenger
+            });
+        }).catch(err => {
+            alert("Не удалось войти");
+            console.log(err)
+        });
     }
 
     async signUp(user) {

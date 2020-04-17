@@ -1,4 +1,4 @@
-package com.ainur.models.message.data;
+package com.ainur.broker.models.message.data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

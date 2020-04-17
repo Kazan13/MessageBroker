@@ -7,7 +7,7 @@ import Content from "./components/content/content";
 import Header from "./components/content/header/header";
 import Footer from "./components/content/footer/footer";
 import CreateChannelWindow from "./components/content/channels/createChannelWindow/createChannelWindow";
-import {createStore} from "redux";
+import {connect} from "react-redux";
 
 class App extends Component {
     constructor(props) {
@@ -27,6 +27,7 @@ class App extends Component {
             token: tokenNewState.token
         })
     }
+
     onMessengerChange(messengerNewState) {
         this.setState({
             messenger: messengerNewState.messenger
@@ -51,14 +52,8 @@ class App extends Component {
         })
     }
 
-    onCreateNewChannelWindowChanged(newWindowState) {
-        this.setState({
-            createNewChannelWindow: newWindowState.createNewChannelWindow
-        })
-    }
-
     render() {
-        let messengerVisibleStyle = this.state.messenger ? {display: 'block'} : {display: 'none'};
+        let messengerVisibleStyle = this.props.messenger ? {display: 'block'} : {display: 'none'};
         return (
             <div className="App">
                 <SignUp dataController={this.dataController}
@@ -66,10 +61,7 @@ class App extends Component {
                 <SignIn dataController={this.dataController}
                         signInLayer={this.state.signInLayer}/>
                 <div style={messengerVisibleStyle}>
-                    <CreateChannelWindow
-                        dataController={this.dataController}
-                        window={this.state.createNewChannelWindow}
-                        token={this.state.token}/>
+                    <CreateChannelWindow/>
                     <Header
                         dataController={this.dataController}/>
                     <Content
@@ -82,4 +74,8 @@ class App extends Component {
     }
 }
 
-export default App;
+export default connect(
+    state => (
+        {messenger: state.messenger}
+    )
+)(App);

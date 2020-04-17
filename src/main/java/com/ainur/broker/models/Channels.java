@@ -1,4 +1,4 @@
-package com.ainur.models;
+package com.ainur.broker.models;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import styles from "./sign_up.module.css";
+import {connect} from "react-redux";
 
-class SignIn extends Component {
+class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -77,7 +78,8 @@ class SignIn extends Component {
                         </div>
                     </form>
                     <button onClick={()=>{
-                        this.props.dataController.showSignInLayer();
+                        this.props.onSignUpLayer();
+                        this.props.onSignInLayer();
                     }}>
                         SignIn
                     </button>
@@ -88,4 +90,16 @@ class SignIn extends Component {
 
 }
 
-export default SignIn;
+export default connect(
+    state => (
+        {signUpLayer: state.signUpLayer}
+    ),
+    dispatch => ({
+        onSignUpLayer: () => {
+            dispatch({type: 'HIDE_SIGN_UP_LAYER'})
+        },
+        onSignInLayer: () => {
+            dispatch({type: 'SHOW_SIGN_IN_LAYER'})
+        },
+    })
+)(SignUp);

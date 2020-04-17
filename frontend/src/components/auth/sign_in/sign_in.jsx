@@ -1,49 +1,41 @@
 import React, {Component} from "react";
 import styles from "./sign_in.module.css";
+import {connect} from "react-redux";
+import {signIn} from "../../../services/http-service";
 
 class SignIn extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            username: '',
-            password: '',
-        }
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.usernameChange = this.usernameChange.bind(this);
-        this.passwordChange = this.passwordChange.bind(this);
+        this.signIn = this.signIn.bind(this);
+        this.makeUser = this.makeUser.bind(this);
     }
 
-    usernameChange(e) {
-        this.setState({
-            ...this.state,
-            username: e.target.value});
+    async signIn(user) {
+        await signIn(user).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('unauthorized');
+            }
+        }).then(json => {
+            this.props.onToken(json.token);
+            this.props.onSignInLayer();
+            this.props.onMessenger();
+        }).catch(err => {
+            alert("Не удалось войти");
+            console.log(err)
+        });
     }
 
-    passwordChange(e) {
-        this.setState({
-            ...this.state,
-            password: e.target.value});
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        if (!this.state.username.length || !this.state.password.length) {
+    makeUser() {
+        if (!this.username.value.length || !this.password.value.length) {
             return;
         }
         const user = {
-            username: this.state.username,
-            password: this.state.password,
+            username: this.username.value,
+            password: this.password.value,
         };
-
-
-        this.props.dataController.signIn(user);
-
-        this.setState(state => ({
-            ...this.state,
-            username: '',
-            password: ''
-        }));
+        this.signIn(user);
     }
 
 
@@ -53,32 +45,37 @@ class SignIn extends Component {
             <div style={layerVisibleStyle} className={styles.signInPage}>
                 <div className={styles.container}>
                     <h1 className="title">Sign In</h1>
-                <form className={styles.form} onSubmit={this.handleSubmit}>
-                    <div className={styles.input}>
-                        <input
-                            type="text"
-                            placeholder="username"
-                            onChange={this.usernameChange}
-                            value={this.state.username}
-                        />
+                    <div className={styles.form}>
+                        <div className={styles.input}>
+                            <input
+                                type="text"
+                                placeholder="username"
+                                value={this.username}
+                                ref={(input => {
+                                    this.username = input
+                                })}
+                            />
+                        </div>
+                        <div className={styles.input}>
+                            <input
+                                type="password"
+                                placeholder="password"
+                                value={this.password}
+                                ref={(input => {
+                                    this.password = input
+                                })}
+                            />
+                        </div>
+                        <div>
+                            <button onClick={this.makeUser}>
+                                SignIn
+                            </button>
+                        </div>
                     </div>
-                    <div className={styles.input}>
-                        <input
-                            type="password"
-                            placeholder="password"
-                            onChange={this.passwordChange}
-                            value={this.state.password}
-                        />
-                    </div>
-                    <div>
-                        <button>
-                            SignIn
-                        </button>
-                    </div>
-                </form>
 
-                    <button onClick={()=>{
-                        this.props.dataController.showSignUpLayer();
+                    <button onClick={() => {
+                        this.props.onSignUpLayer();
+                        this.props.onSignInLayer();
                     }}>
                         SignUp
                     </button>
@@ -89,4 +86,22 @@ class SignIn extends Component {
 
 }
 
-export default SignIn;
+export default connect(
+    state => (
+        {signInLayer: state.signInLayer}
+    ),
+    dispatch => ({
+        onSignUpLayer: () => {
+            dispatch({type: 'SHOW_SIGN_UP_LAYER'})
+        },
+        onSignInLayer: () => {
+            dispatch({type: 'HIDE_SIGN_IN_LAYER'})
+        },
+        onMessenger: () => {
+            dispatch({type: 'SHOW_MESSENGER'})
+        },
+        onToken: (token) => {
+            dispatch({type : 'SET_TOKEN', payload: token})
+        }
+    })
+)(SignIn);
