@@ -1,13 +1,10 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message.data;
 
 
-import org.springframework.stereotype.Component;
-
-public class DisconnectMessage {
+public class Disconnect {
 
     private String token;
 
-    
     public String getToken() {
         return token;
     }

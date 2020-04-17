@@ -1,4 +1,4 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message.data;
 
 public class MessagePocket {
     private String Sender;

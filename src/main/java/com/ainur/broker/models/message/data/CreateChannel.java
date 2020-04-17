@@ -1,7 +1,7 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message.data;
 
 
-public class CreateChannelMessage {
+public class CreateChannel {
     private String channelName;
 
     public String getChannelName() {

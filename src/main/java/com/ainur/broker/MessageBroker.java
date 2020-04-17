@@ -1,22 +1,22 @@
-package com.ainur.broker;
+package com.ainur;
 
-import com.ainur.broker.model.messages.MessagePocket;
-import com.ainur.broker.model.messages.PublishMessage;
-import com.ainur.broker.repository.MySQLRepository;
-import com.ainur.broker.storages.TokensStorage;
-import com.ainur.broker.storages.WebSocketsStorage;
+import com.ainur.models.message.data.MessagePocket;
+import com.ainur.models.message.data.Publish;
+import com.ainur.repository.MySQLRepository;
+import com.ainur.storages.TokensStorage;
+import com.ainur.storages.WebSocketsStorage;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
 public class MessageBroker {
-    PublishMessage message;
+    Publish message;
     @Autowired
     MySQLRepository mySQLRepository;
     Gson gson;
 
-    public MessageBroker(PublishMessage message) {
+    public MessageBroker(Publish message) {
         this.message = message;
         gson = new Gson();
     }
@@ -35,8 +35,8 @@ public class MessageBroker {
         sqlString = "select * from channels where channel = '" + message.getChannelName() + "'";
 
         sqlString = "select * from subscriptions where channel_id = '" + mySQLRepository.getChannelId(sqlString) + "'";
-        ArrayList<String> subscribersId = mySQLRepository.getSubscribersId(sqlString);
-        for (String id : subscribersId) {
+        ArrayList<Integer> subscribersId = mySQLRepository.getSubscribersId(sqlString);
+        for (int id : subscribersId) {
             WebSocketsStorage.getWebSocketsStorage().getSocket(id).send(jsonString);
         }
     }

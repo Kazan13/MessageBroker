@@ -1,14 +1,12 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message.data;
 
-public class User {
+
+public class SignUp {
     private String username;
     private String password;
 
-    public User() {
-    }
-
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -16,10 +14,12 @@ public class User {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

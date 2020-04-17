@@ -1,11 +1,9 @@
-package com.ainur.broker.model.messages;
-
-import org.springframework.stereotype.Component;
+package com.ainur.models.message.data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PublishMessage {
+public class Publish {
     private String token;
     private String channelName;
     private String message;
@@ -13,7 +11,7 @@ public class PublishMessage {
     private Date sendDate = new Date();
     SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-    public PublishMessage() {
+    public Publish() {
         sendDateString = formatForDateNow.format(sendDate);
     }
 

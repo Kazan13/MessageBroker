@@ -1,14 +1,14 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message.data;
 
-
-import org.springframework.stereotype.Component;
-
-public class SignUpMessage {
+public class User {
     private String username;
     private String password;
 
+    public User() {
+    }
+
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -16,12 +16,10 @@ public class SignUpMessage {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 }

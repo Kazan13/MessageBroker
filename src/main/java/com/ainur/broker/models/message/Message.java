@@ -1,9 +1,9 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message;
 
 
 public class Message {
     private String token;
-    private int command;
+    private String command;
     private String data;
 
     public String getToken() {
@@ -14,11 +14,11 @@ public class Message {
         this.token = token;
     }
 
-    public int getCommand() {
+    public String getCommand() {
         return command;
     }
 
-    public void setCommand(int command) {
+    public void setCommand(String command) {
         this.command = command;
     }
 

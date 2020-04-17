@@ -1,9 +1,7 @@
-package com.ainur.broker.model.messages;
+package com.ainur.models.message.data;
 
 
-import org.springframework.stereotype.Component;
-
-public class SubscribeMessage {
+public class Subscribe {
     private String token;
     private String channelName;
 
