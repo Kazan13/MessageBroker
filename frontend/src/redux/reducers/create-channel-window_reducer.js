@@ -1,12 +1,11 @@
-const initialState = false;
 
-export default function createChannelWindow(state = initialState, action) {
+export default function createChannelWindowReducer(state, action) {
     switch (action.type) {
         case 'SHOW_CREATE_CHANNEL_WINDOW': {
-            return action.payload;
+            return true;
         }
         case 'HIDE_CREATE_CHANNEL_WINDOW': {
-            return action.payload;
+            return false;
         }
         default: {
             return state;

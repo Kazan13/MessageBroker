@@ -1,6 +1,4 @@
-const initialState = true;
-
-export default function signInLayer(state = initialState, action) {
+export default function signInLayerReducer(state, action) {
     switch (action.type) {
         case 'SHOW_SIGN_IN_LAYER': {
             return true;

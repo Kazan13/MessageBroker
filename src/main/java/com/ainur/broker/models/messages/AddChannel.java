@@ -1,16 +1,15 @@
 package com.ainur.broker.models.message.data;
 
 
-public class CreateChannel {
+public class AddChannel {
+    private String token;
     private String channelName;
 
     public String getChannelName() {
         return channelName;
     }
 
-    public void setChannelName(String chanelName) {
-        this.channelName = chanelName;
+    public String getToken() {
+        return token;
     }
-
-
 }

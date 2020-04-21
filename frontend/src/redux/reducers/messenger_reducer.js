@@ -1,6 +1,4 @@
-const initialState = false;
-
-export default function messenger(state = initialState, action) {
+export default function messengerReducer(state, action) {
     switch (action.type) {
         case 'SHOW_MESSENGER': {
             return true

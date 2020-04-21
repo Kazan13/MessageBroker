@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './App.module.css';
 import SignUp from "./components/auth/sign_up/sign_up";
-import DataController from "./redux/data-controller";
 import SignIn from "./components/auth/sign_in/sign_in";
 import Content from "./components/content/content";
 import Header from "./components/content/header/header";
@@ -12,61 +11,40 @@ import {connect} from "react-redux";
 class App extends Component {
     constructor(props) {
         super(props);
-        this.dataController = new DataController(this);
-        this.state = this.dataController.getState();
+        this.getChannels = this.getChannels.bind(this);
+        this.getChannels();
     }
 
-    onChannelsChange(channelsNewState) {
-        this.setState({
-            channels: channelsNewState.channels
-        })
-    }
-
-    onTokenChange(tokenNewState) {
-        this.setState({
-            token: tokenNewState.token
-        })
-    }
-
-    onMessengerChange(messengerNewState) {
-        this.setState({
-            messenger: messengerNewState.messenger
+    async getChannels() {
+        await signIn(this.props.token).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('unauthorized');
+            }
+        }).then(json => {
+            let channels = new Map();
+            for (let channel of json.channels) {
+                channel.date = new Date(event.date);
+                channels.set(channel.id, channel);
+            }
+            this.props.onChannels(channel);
+        }).catch(err => {
+            alert("Не удалось войти");
+            console.log(err)
         });
-    }
-
-    onSignUpLayerChange(signUpLayerNewState) {
-        this.setState({
-            signUpLayer: signUpLayerNewState.signUpLayer
-        });
-    }
-
-    onSignInLayerChange(signInLayerNewState) {
-        this.setState({
-            signInLayer: signInLayerNewState.signInLayer
-        });
-    }
-
-    onChannelIdChanged(channelIdState) {
-        this.setState({
-            channelId: channelIdState.channelId
-        })
     }
 
     render() {
         let messengerVisibleStyle = this.props.messenger ? {display: 'block'} : {display: 'none'};
         return (
             <div className="App">
-                <SignUp dataController={this.dataController}
-                        signUpLayer={this.state.signUpLayer}/>
-                <SignIn dataController={this.dataController}
-                        signInLayer={this.state.signInLayer}/>
+                <SignUp/>
+                <SignIn/>
                 <div style={messengerVisibleStyle}>
                     <CreateChannelWindow/>
-                    <Header
-                        dataController={this.dataController}/>
-                    <Content
-                        channelId={this.state.channelId}
-                        channels={this.state.channels}/>
+                    <Header/>
+                    <Content/>
                     <Footer/>
                 </div>
             </div>
@@ -76,6 +54,15 @@ class App extends Component {
 
 export default connect(
     state => (
-        {messenger: state.messenger}
-    )
+        {
+            messenger: state.messenger,
+            token: state.token
+        }
+    ),
+    dispatch => (
+        {
+            onChannels: (channels) => {
+                dispatch({type: 'SET_CHANNELS', payload: channels})
+            }
+        })
 )(App);
