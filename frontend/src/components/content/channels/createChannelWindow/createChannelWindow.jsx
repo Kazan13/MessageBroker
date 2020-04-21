@@ -1,46 +1,42 @@
 import React, {Component} from "react";
 import styles from "./createChannelWindow.module.css"
 import {connect} from "react-redux";
+import {addChannel} from "../../../../services/http-service";
 
 class CreateChannelWindow extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: "",
-        }
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.makeNewChannelMessage = this.makeNewChannelMessage.bind(this);
+        this.addChannel = this.addChannel.bind(this);
     }
 
-    handleChange(e) {
-        this.setState({
-            ...this.state,
-            name: e.target.value
+    async addChannel(newChannelMessage) {
+        await addChannel(newChannelMessage).then(response => {
+            if (response.ok) {
+                this.props.onCreateChannelWindow();
+            } else {
+                throw new Error('Error');
+            }
+        }).catch(err => {
+            alert("Не удалось создать канал");
+            console.log(err)
         });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        if (!this.state.name.length) {
+
+    makeNewChannelMessage() {
+        if (!this.channelName.value.length) {
             return;
         }
-        const message = {
+        const newChannelMessage = {
             token: this.props.token,
-            command: 'CREATE_NEW_CHANNEL',
-            data: JSON.stringify({channelName: this.state.name})
+            channelName: this.channelName.value
         };
 
-        this.props.dataController.createChannel(message);
-
-        this.setState(state => ({
-            ...this.state,
-            name: ''
-        }));
+        this.addChannel(newChannelMessage);
     }
 
     render() {
-        console.log(this.props.state)
         let windowVisibleStile = this.props.createChannelWindow ? {display: 'flex'} : {display: 'none'};
         return (
             <div style={windowVisibleStile}
@@ -56,13 +52,13 @@ class CreateChannelWindow extends Component {
                     </div>
 
                     <div className={styles.form}>
-                        <form onSubmit={this.handleSubmit}>
-                            <input
-                                type="text"
-                                onChange={this.handleChange}
-                                value={this.state.name}/>
-                            <button>create</button>
-                        </form>
+                        <input
+                            type="text"
+                            placeholder="channel name"
+                            ref={(input => {
+                                this.channelName = input
+                            })}/>
+                        <button onClick={this.makeNewChannelMessage}>create</button>
                     </div>
                 </div>
             </div>
@@ -71,7 +67,10 @@ class CreateChannelWindow extends Component {
 }
 
 export default connect(
-    state => ({createChannelWindow: state.createChannelWindow}),
+    state => ({
+        createChannelWindow: state.createChannelWindow,
+        token: state.token
+    }),
     dispatch => ({
         onCreateChannelWindow: () => {
             dispatch({type: 'HIDE_CREATE_CHANNEL_WINDOW', payload: false})

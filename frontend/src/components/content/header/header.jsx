@@ -8,7 +8,7 @@ class Header extends Component{
             <header className={styles.header}>
                 <div>
                     <div className={styles.addChannelButton} onClick={
-                        this.props.onShowCreateChannelWindow
+                        this.props.onShowCreateChannelWindow()
                     }>
                         Creat new channel
                     </div>
@@ -25,7 +25,7 @@ class Header extends Component{
 }
 
 export default connect(
-    state => ({state: state.createNewChannelWindow}),
+    state => ({state: state.createChannelWindow}),
     dispatch => ({
         onShowCreateChannelWindow: () => {
             dispatch({type: 'SHOW_CREATE_CHANNEL_WINDOW', payload: true})

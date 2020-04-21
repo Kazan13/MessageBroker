@@ -1,11 +1,14 @@
 package com.ainur.broker.network;
 
-import com.ainur.broker.models.message.data.User;
-import com.ainur.broker.models.responses.Token;
+import com.ainur.broker.models.messages.AddChannel;
+import com.ainur.broker.models.messages.Subscribe;
+import com.ainur.broker.models.User;
+import com.ainur.broker.models.Token;
 import com.ainur.broker.repository.MySQLRepository;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,8 +59,71 @@ public class AppRESTController {
         try {
             User user = gson.fromJson(request.getReader(), User.class);
             log.info("sign up message from user:" + user.getUsername());
-            return this.mySQLRepository.signUp(user) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return this.mySQLRepository.signUp(user) ?
+                    new ResponseEntity(HttpStatus.OK) :
+                    new ResponseEntity(HttpStatus.UNAUTHORIZED);
         } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @RequestMapping("/get-channels")
+    @PostMapping(produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity getChannels(HttpServletRequest request) {
+        gson = new Gson();
+        log  = Logger.getLogger(AppRESTController.class.getName());
+        try {
+            Token token = gson.fromJson(request.getReader(), Token.class);
+            log.info("get channels message");
+            return new ResponseEntity(this.mySQLRepository.getAllChannels(token), HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping("/add-channel")
+    @PostMapping(produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity addChannel(HttpServletRequest request) {
+        gson = new Gson();
+        log  = Logger.getLogger(AppRESTController.class.getName());
+        try {
+            AddChannel addChannel = gson.fromJson(request.getReader(), AddChannel.class);
+            log.info("get \"add channel\" message");
+            if(this.mySQLRepository.createChannel(addChannel)) {
+                return new ResponseEntity(HttpStatus.OK);
+            } else
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping("/subscribe")
+    @PostMapping(produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity subscribe(HttpServletRequest request) {
+        gson = new Gson();
+        log  = Logger.getLogger(AppRESTController.class.getName());
+        try {
+            Subscribe subscribe = gson.fromJson(request.getReader(), Subscribe.class);
+            log.info("get \"subscribe\" message");
+            if(this.mySQLRepository.subscribe(subscribe)) {
+                return new ResponseEntity(HttpStatus.OK);
+            } else
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
             e.printStackTrace();
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }

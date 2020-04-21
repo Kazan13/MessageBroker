@@ -1,15 +1,14 @@
 package com.ainur.broker.repository;
 
-import com.ainur.broker.models.responses.ResponseMessage;
-import com.ainur.broker.network.WSServer;
+import com.ainur.broker.models.Channel;
+import com.ainur.broker.models.Channels;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;
-import com.ainur.broker.models.message.data.CreateChannel;
-import com.ainur.broker.models.message.data.Publish;
-import com.ainur.broker.models.message.data.Subscribe;
-import com.ainur.broker.models.message.data.User;
-import com.ainur.broker.models.responses.Token;
-import com.ainur.broker.util.MessageType;
+import com.ainur.broker.models.messages.AddChannel;
+import com.ainur.broker.models.messages.Publish;
+import com.ainur.broker.models.messages.Subscribe;
+import com.ainur.broker.models.User;
+import com.ainur.broker.models.Token;
 import com.google.gson.Gson;
 import org.java_websocket.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class MySQLRepository {
     }
 
     public Token signIn(User user) {
-        Logger log  = Logger.getLogger(MySQLRepository.class.getName());
+        Logger log = Logger.getLogger(MySQLRepository.class.getName());
         UUID uuid = UUID.randomUUID();
         Token token = new Token();
         if (isLoginPasswordValid(user)) {
@@ -98,7 +97,7 @@ public class MySQLRepository {
     }
 
     public boolean signUp(User user) {
-        Logger log  = Logger.getLogger(MySQLRepository.class.getName());
+        Logger log = Logger.getLogger(MySQLRepository.class.getName());
         try (Connection connection = dataSource.getConnection()) {
             if (!isUserExists(user)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
@@ -115,12 +114,10 @@ public class MySQLRepository {
         }
     }
 
-    public void getAllChannels(String token) {
+    public Channels getAllChannels(Token token) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
-        Gson gson = new Gson();
-        int userId = TokensStorage.getTokenStorage().getUserId(token);
-        WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
-        ArrayList<String> channels = new ArrayList<>();
+        int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
+        Channels channels = new Channels();
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHANNELS);
             preparedStatement.setInt(1, userId);
@@ -129,16 +126,17 @@ public class MySQLRepository {
                 preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
                 preparedStatement.setInt(1, resultSet.getInt(1));
                 resultSet = preparedStatement.executeQuery();
-                if(resultSet.next())
-                    channels.add(resultSet.getString(2));
+                if (resultSet.next()) {
+                    Channel channel = new Channel();
+                    channel.setChannelName(resultSet.getString(2));
+                    channel.setId(resultSet.getInt(1));
+                    channels.addChannel(channel);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ResponseMessage message = new ResponseMessage();
-        message.setCommand(MessageType.CHANNELS);
-        message.setData(gson.toJson(channels, ArrayList.class));
-        socket.send(gson.toJson(message, ResponseMessage.class));
+        return channels;
     }
 
     public boolean isUserExists(User user) {
@@ -271,14 +269,36 @@ public class MySQLRepository {
         }
     }
 
-    public void subscribe(Subscribe subscribe) {
+    public boolean subscribe(Subscribe subscribe) throws SQLException {
+        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        int userId = TokensStorage.getTokenStorage().getUserId(subscribe.getToken());
+        Connection connection = dataSource.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
+        preparedStatement.setString(1, subscribe.getChannelName());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            int channelId = Integer.parseInt(resultSet.getString(1));
+            preparedStatement = connection.prepareStatement(INSERT_SUBSCRIPTION);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, channelId);
+            preparedStatement.executeUpdate();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean createChannel(AddChannel addChannel) throws SQLException {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         Gson gson = new Gson();
-        int userId = TokensStorage.getTokenStorage().getUserId(subscribe.getToken());
-        WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
-            preparedStatement.setString(1, subscribe.getChannelName());
+        int userId = TokensStorage.getTokenStorage().getUserId(addChannel.getToken());
+        Connection connection = dataSource.getConnection();
+        if (!isChannelExists(addChannel.getChannelName())) {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHANNEL);
+            preparedStatement.setString(1, addChannel.getChannelName());
+            preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
+            preparedStatement.setString(1, addChannel.getChannelName());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int channelId = Integer.parseInt(resultSet.getString(1));
@@ -286,41 +306,10 @@ public class MySQLRepository {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setInt(2, channelId);
                 preparedStatement.executeUpdate();
-                socket.send(gson.toJson(HttpStatus.OK));
-            } else {
-                socket.send(gson.toJson(HttpStatus.CONFLICT));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createChannel(CreateChannel createChannel, Token token) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
-        Gson gson = new Gson();
-        int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
-        try (Connection connection = dataSource.getConnection()) {
-            WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
-            if (!isChannelExists(createChannel.getChannelName())) {
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHANNEL);
-                preparedStatement.setString(1, createChannel.getChannelName());
-                preparedStatement.executeUpdate();
-                preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
-                preparedStatement.setString(1, createChannel.getChannelName());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if(resultSet.next()) {
-                    int channelId = Integer.parseInt(resultSet.getString(1));
-                    preparedStatement = connection.prepareStatement(INSERT_SUBSCRIPTION);
-                    preparedStatement.setInt(1, userId);
-                    preparedStatement.setInt(2, channelId);
-                    preparedStatement.executeUpdate();
-                }
-                socket.send(gson.toJson(HttpStatus.OK));
-            } else {
-                socket.send(gson.toJson(HttpStatus.CONFLICT));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return true;
+        } else {
+            return false;
         }
     }
 }

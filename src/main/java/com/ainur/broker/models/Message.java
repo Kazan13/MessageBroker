@@ -1,4 +1,4 @@
-package com.ainur.broker.models.message;
+package com.ainur.broker.models;
 
 
 public class Message {

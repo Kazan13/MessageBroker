@@ -1,14 +1,16 @@
-import {combineReducers} from "redux";
-import createChannelWindow from "./create-channel-window";
-import signUpLayer from "./sign-up-layer";
-import signInLayer from "./sign-in-layer";
-import token from "./token";
-import messenger from "./messenger";
+import {combineReducers} from "redux-immutable";
+import createChannelWindowReducer from "./create-channel-window_reducer";
+import signUpLayerReducer from "./sign-up-layer_reducer";
+import signInLayerReducer from "./sign-in-layer_reducer";
+import tokenReducer from "./token_reducer";
+import messengerReducer from "./messenger_reducer";
+import channelsReducer from "./channels_reducer";
 
 export default combineReducers({
-    createChannelWindow,
-    signUpLayer,
-    signInLayer,
-    token,
-    messenger
+    createChannelWindow: createChannelWindowReducer,
+    signUpLayer: signUpLayerReducer,
+    signInLayer: signInLayerReducer,
+    token: tokenReducer,
+    messenger: messengerReducer,
+    channels : channelsReducer
 })

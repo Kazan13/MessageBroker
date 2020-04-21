@@ -1,7 +1,7 @@
 package com.ainur.broker;
 
-import com.ainur.broker.models.message.data.MessagePocket;
-import com.ainur.broker.models.message.data.Publish;
+import com.ainur.broker.models.messages.MessagePocket;
+import com.ainur.broker.models.messages.Publish;
 import com.ainur.broker.repository.MySQLRepository;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;

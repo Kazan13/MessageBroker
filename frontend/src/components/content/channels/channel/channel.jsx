@@ -9,7 +9,7 @@ class Channel extends Component {
 
                 </div>
                 <div className={styles.channelName}>
-                    {this.props.channel.channel_name}
+                    {this.props.channel}
                 </div>
             </div>
         )

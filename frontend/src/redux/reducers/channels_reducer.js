@@ -5,11 +5,9 @@ export default function channelsReducer(state, action) {
             return action.payload;
         }
         case 'GET_CHANNELS': {
-            debugger
             return state
         }
         default: {
-            debugger
             return state;
         }
     }

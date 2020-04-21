@@ -3,13 +3,13 @@ package com.ainur.broker.models;
 import java.util.ArrayList;
 
 public class Channels {
-    private ArrayList<String> channels = new ArrayList<>();
+    private ArrayList<Channel> channels = new ArrayList<>();
 
-    public ArrayList<String> getChannels() {
+    public ArrayList<Channel> getChannels() {
         return channels;
     }
 
-    public void setChannels(ArrayList<String> channels) {
-        this.channels = channels;
+    public void addChannel(Channel channel) {
+        this.channels.add(channel);
     }
 }

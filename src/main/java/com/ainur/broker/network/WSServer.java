@@ -1,6 +1,6 @@
 package com.ainur.broker.network;
 
-import com.ainur.broker.models.message.Message;
+import com.ainur.broker.models.Message;
 import com.ainur.broker.storages.MessagesStorage;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;

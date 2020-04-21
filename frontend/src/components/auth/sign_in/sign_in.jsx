@@ -1,13 +1,30 @@
 import React, {Component} from "react";
 import styles from "./sign_in.module.css";
 import {connect} from "react-redux";
-import {signIn} from "../../../services/http-service";
+import {getChannels, signIn} from "../../../services/http-service";
 
 class SignIn extends Component {
     constructor(props) {
         super(props);
         this.signIn = this.signIn.bind(this);
         this.makeUser = this.makeUser.bind(this);
+        this.getChannels = this.getChannels.bind(this);
+    }
+
+
+    async getChannels() {
+        await getChannels(this.props.token).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('unauthorized');
+            }
+        }).then(json => {
+            this.props.onChannels(json.channels.channels);
+        }).catch(err => {
+            alert("Не удалось войти");
+            console.log(err)
+        });
     }
 
     async signIn(user) {
@@ -21,6 +38,7 @@ class SignIn extends Component {
             this.props.onToken(json.token);
             this.props.onSignInLayer();
             this.props.onMessenger();
+            this.getChannels();
         }).catch(err => {
             alert("Не удалось войти");
             console.log(err)
@@ -89,7 +107,8 @@ class SignIn extends Component {
 
 export default connect(
     state => (
-        {signInLayer: state.signInLayer}
+        {signInLayer: state.signInLayer,
+        token: state.token}
     ),
     dispatch => ({
         onSignUpLayer: () => {
@@ -103,6 +122,9 @@ export default connect(
         },
         onToken: (token) => {
             dispatch({type : 'SET_TOKEN', payload: token})
+        },
+        onChannels: (channels) => {
+            dispatch({type: 'SET_CHANNELS', payload: channels})
         }
     })
 )(SignIn);

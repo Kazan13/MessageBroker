@@ -1,4 +1,3 @@
-const initialState = false;
 
 export default function signUpLayerReducer(state, action) {
     switch (action.type) {

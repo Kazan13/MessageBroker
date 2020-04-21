@@ -1,4 +1,4 @@
-package com.ainur.broker.models.responses;
+package com.ainur.broker.models;
 
 
 

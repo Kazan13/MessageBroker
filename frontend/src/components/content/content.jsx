@@ -7,8 +7,8 @@ class Content extends Component{
     render() {
         return (
             <div className={styles.content}>
-                <Channels channels={this.props.channels} />
-                <Dialog channelId={this.props.channelId}/>
+                <Channels/>
+                <Dialog/>
             </div>
         )
     }
