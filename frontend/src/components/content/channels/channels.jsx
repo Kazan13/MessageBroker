@@ -8,9 +8,9 @@ class Channels extends Component {
         if (this.props.channels)
             return (
                 <div className={styles.channels}>
-                    {this.props.channels.map((channel, index) => (
-                        <Channel key={index} channel={channel}/>
-                    ))}
+                    {/*{this.props.channels.map((channel, index) => (*/}
+                    {/*    <Channel key={index} channel={channel}/>*/}
+                    {/*))}*/}
                 </div>
             );
         else return <div></div>;
@@ -18,7 +18,13 @@ class Channels extends Component {
 }
 
 export default connect(
-    state => (
-        {channels: state.channels}
-    )
+    state => {
+        if (state.messenger)
+            return {
+                channels: state.messenger.channels
+            }
+        else return {
+            channels: new Map()
+        }
+    }
 )(Channels);

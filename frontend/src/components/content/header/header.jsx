@@ -8,7 +8,7 @@ class Header extends Component{
             <header className={styles.header}>
                 <div>
                     <div className={styles.addChannelButton} onClick={
-                        this.props.onShowCreateChannelWindow()
+                        this.props.onShowCreateChannelWindow
                     }>
                         Creat new channel
                     </div>

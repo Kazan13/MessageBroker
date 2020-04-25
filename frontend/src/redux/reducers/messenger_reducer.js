@@ -1,10 +1,10 @@
-export default function messengerReducer(state, action) {
+const initialState = {
+    channels: new Map()
+}
+export default function messengerReducer(state = initialState, action) {
     switch (action.type) {
-        case 'SHOW_MESSENGER': {
-            return true
-        }
-        case 'HIDE_MESSENGER': {
-            return false
+        case 'SET_CHANNELS': {
+            return action.payload;
         }
         default: {
             return state;

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './App.module.css';
 import SignUp from "./components/auth/sign_up/sign_up";
 import SignIn from "./components/auth/sign_in/sign_in";
 import Content from "./components/content/content";
@@ -9,9 +8,13 @@ import CreateChannelWindow from "./components/content/channels/createChannelWind
 import {connect} from "react-redux";
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+
     render() {
-        debugger
-        let messengerVisibleStyle = this.props.messenger ? {display: 'block'} : {display: 'none'};
+        let messengerVisibleStyle = this.props.fetchState().isVisible ? {display: 'block'} : {display: 'none'};
         return (
             <div className="App">
                 <SignUp/>
@@ -19,7 +22,7 @@ class App extends Component {
                 <div style={messengerVisibleStyle}>
                     <CreateChannelWindow/>
                     <Header/>
-                    <Content />
+                    <Content/>
                     <Footer/>
                 </div>
             </div>
@@ -27,10 +30,20 @@ class App extends Component {
     }
 }
 
+
 export default connect(
-    state => (
-        {
-            messenger: state.messenger
+    store => {
+        if (store.modalWindow)
+            return {
+                messenger: store.modalWindow.messenger.isVisible
+            }
+        else
+            return {messenger: false}
+    },
+    dispatch => ({
+        fetchState: () => {
+            dispatch({type: 'FETCH_STATE'})
         }
-    )
-)(App);
+    })
+)
+(App);

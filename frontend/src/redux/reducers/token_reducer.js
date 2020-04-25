@@ -1,8 +1,18 @@
+const initialState = {
+    token: {
+        token: ''
+    }
+};
 
-export default function tokenReducer(state, action) {
+export default function tokenReducer(state = initialState, action) {
     switch (action.type) {
         case 'SET_TOKEN': {
-            return action.payload;
+            return {
+                ...state,
+                token: {
+                    token: action.payload
+                }
+            }
         }
         default: {
             return state;

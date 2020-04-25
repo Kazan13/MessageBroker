@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import styles from "./sign_in.module.css";
 import {connect} from "react-redux";
 import {getChannels, signIn} from "../../../services/http-service";
+import {Types} from "../../../redux/action-types/action-types";
 
 class SignIn extends Component {
     constructor(props) {
@@ -61,7 +62,7 @@ class SignIn extends Component {
 
 
     render() {
-        let layerVisibleStyle = this.props.signInLayer ? {display: 'flex'} : {display: 'none'};
+        let layerVisibleStyle = this.props.signInWindow ? {display: 'flex'} : {display: 'none'};
         return (
             <div style={layerVisibleStyle} className={styles.signInPage}>
                 <div className={styles.container}>
@@ -106,10 +107,23 @@ class SignIn extends Component {
 }
 
 export default connect(
-    state => (
-        {signInLayer: state.signInLayer,
-        token: state.token}
-    ),
+    state => {
+        if (state.modalWindow && state.auth)
+            return {
+                signInWindow: state.modalWindow.signInWindow.isVisible,
+                token: state.auth.token.token
+            }
+        else if (state.auth)
+            return {
+                signInWindow: true,
+                token: state.auth.token.token
+            }
+        else if(state.modalWindow)
+            return {
+                signInWindow: state.modalWindow.signInWindow.isVisible,
+                token: ""
+            }
+    },
     dispatch => ({
         onSignUpLayer: () => {
             dispatch({type: 'SHOW_SIGN_UP_LAYER'})
@@ -121,7 +135,7 @@ export default connect(
             dispatch({type: 'SHOW_MESSENGER'})
         },
         onToken: (token) => {
-            dispatch({type : 'SET_TOKEN', payload: token})
+            dispatch({type: 'SET_TOKEN', payload: token})
         },
         onChannels: (channels) => {
             dispatch({type: 'SET_CHANNELS', payload: channels})
