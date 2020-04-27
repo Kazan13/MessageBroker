@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import styles from "./createChannelWindow.module.css"
 import {connect} from "react-redux";
 import {addChannel} from "../../../../services/http-service";
+import {getChannelsAction} from "../../../../redux/actions/channelsAction";
 
 class CreateChannelWindow extends Component {
     constructor(props) {
@@ -11,9 +12,11 @@ class CreateChannelWindow extends Component {
     }
 
     async addChannel(newChannelMessage) {
-        await addChannel(newChannelMessage).then(response => {
+        addChannel(newChannelMessage).then(response => {
             if (response.ok) {
                 this.props.onCreateChannelWindow();
+                this.props.onChannels(this.props.token);
+
             } else {
                 throw new Error('Error');
             }
@@ -68,12 +71,15 @@ class CreateChannelWindow extends Component {
 
 export default connect(
     state => ({
-        createChannelWindow: state.createChannelWindow,
-        token: state.token
+        createChannelWindow: state.modalWindow.createChannelWindow.isVisible,
+        token: state.auth.token.token
     }),
     dispatch => ({
         onCreateChannelWindow: () => {
-            dispatch({type: 'HIDE_CREATE_CHANNEL_WINDOW', payload: false})
+            dispatch({type: 'HIDE_CREATE_CHANNEL_WINDOW'})
         },
+        onChannels: (token) => {
+            dispatch(getChannelsAction(token))
+        }
     })
 )(CreateChannelWindow);

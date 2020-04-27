@@ -1,4 +1,4 @@
-import {combineReducers} from "redux-immutable";
+import {combineReducers} from "redux";
 import tokenReducer from "./token_reducer";
 import messengerReducer from "./messenger_reducer";
 import modalWindowReducer from "./modal_window_reducer";

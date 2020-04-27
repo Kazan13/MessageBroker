@@ -124,12 +124,12 @@ public class MySQLRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
-                preparedStatement.setInt(1, resultSet.getInt(1));
-                resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
+                preparedStatement.setInt(1, resultSet.getInt(2));
+                ResultSet result = preparedStatement.executeQuery();
+                if (result.next()) {
                     Channel channel = new Channel();
-                    channel.setChannelName(resultSet.getString(2));
-                    channel.setId(resultSet.getInt(1));
+                    channel.setChannelName(result.getString(2));
+                    channel.setId(result.getInt(1));
                     channels.addChannel(channel);
                 }
             }

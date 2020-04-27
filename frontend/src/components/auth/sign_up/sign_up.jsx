@@ -36,7 +36,7 @@ class SignUp extends Component {
 
 
     render() {
-        let layerVisibleStyle = this.props.signUpLayer ? {display: 'flex'} : {display: 'none'};
+        let layerVisibleStyle = this.props.signUpWindow ? {display: 'flex'} : {display: 'none'};
         return (
             <div style={layerVisibleStyle} className={styles.signUpPage}>
                 <div className={styles.container}>
@@ -82,14 +82,14 @@ class SignUp extends Component {
 
 export default connect(
     state => (
-        {signUpLayer: state.signUpLayer}
+        {signUpWindow: state.modalWindow.signUpWindow.isVisible}
     ),
     dispatch => ({
         onSignUpLayer: () => {
-            dispatch({type: 'HIDE_SIGN_UP_LAYER'})
+            dispatch({type: 'HIDE_SIGN_UP_WINDOW'})
         },
         onSignInLayer: () => {
-            dispatch({type: 'SHOW_SIGN_IN_LAYER'})
+            dispatch({type: 'SHOW_SIGN_IN_WINDOW'})
         }
     })
 )(SignUp);

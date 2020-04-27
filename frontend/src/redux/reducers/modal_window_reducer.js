@@ -7,11 +7,6 @@ const initialState = {
 
 export default function modalWindowReducer(state = initialState, action) {
     switch (action.type) {
-        case 'FETCH_STATE': {
-            return {
-                messenger: state.messenger
-            }
-        }
         case 'SHOW_SIGN_IN_WINDOW': {
             return {
                 ...state,

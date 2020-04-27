@@ -3,29 +3,13 @@ import styles from "./sign_in.module.css";
 import {connect} from "react-redux";
 import {getChannels, signIn} from "../../../services/http-service";
 import {Types} from "../../../redux/action-types/action-types";
+import {getChannelsAction} from "../../../redux/actions/channelsAction";
 
 class SignIn extends Component {
     constructor(props) {
         super(props);
         this.signIn = this.signIn.bind(this);
         this.makeUser = this.makeUser.bind(this);
-        this.getChannels = this.getChannels.bind(this);
-    }
-
-
-    async getChannels() {
-        await getChannels(this.props.token).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('unauthorized');
-            }
-        }).then(json => {
-            this.props.onChannels(json.channels.channels);
-        }).catch(err => {
-            alert("Не удалось войти");
-            console.log(err)
-        });
     }
 
     async signIn(user) {
@@ -37,9 +21,9 @@ class SignIn extends Component {
             }
         }).then(json => {
             this.props.onToken(json.token);
-            this.props.onSignInLayer();
+            this.props.onSignInWindow();
             this.props.onMessenger();
-            this.getChannels();
+            this.props.onChannels(this.props.token);
         }).catch(err => {
             alert("Не удалось войти");
             console.log(err)
@@ -94,8 +78,8 @@ class SignIn extends Component {
                     </div>
 
                     <button onClick={() => {
-                        this.props.onSignUpLayer();
-                        this.props.onSignInLayer();
+                        this.props.onSignUpWindow();
+                        this.props.onSignInWindow();
                     }}>
                         SignUp
                     </button>
@@ -108,37 +92,26 @@ class SignIn extends Component {
 
 export default connect(
     state => {
-        if (state.modalWindow && state.auth)
             return {
                 signInWindow: state.modalWindow.signInWindow.isVisible,
                 token: state.auth.token.token
-            }
-        else if (state.auth)
-            return {
-                signInWindow: true,
-                token: state.auth.token.token
-            }
-        else if(state.modalWindow)
-            return {
-                signInWindow: state.modalWindow.signInWindow.isVisible,
-                token: ""
             }
     },
     dispatch => ({
-        onSignUpLayer: () => {
-            dispatch({type: 'SHOW_SIGN_UP_LAYER'})
+        onSignUpWindow: () => {
+            dispatch({type: Types.SHOW_SIGN_UP_WINDOW})
         },
-        onSignInLayer: () => {
-            dispatch({type: 'HIDE_SIGN_IN_LAYER'})
+        onSignInWindow: () => {
+            dispatch({type: Types.HIDE_SIGN_IN_WINDOW})
         },
         onMessenger: () => {
-            dispatch({type: 'SHOW_MESSENGER'})
+            dispatch({type: Types.SHOW_MESSENGER})
         },
         onToken: (token) => {
-            dispatch({type: 'SET_TOKEN', payload: token})
+            dispatch({type: Types.SET_TOKEN, payload: token})
         },
-        onChannels: (channels) => {
-            dispatch({type: 'SET_CHANNELS', payload: channels})
+        onChannels: (token) => {
+            dispatch(getChannelsAction(token))
         }
     })
 )(SignIn);
