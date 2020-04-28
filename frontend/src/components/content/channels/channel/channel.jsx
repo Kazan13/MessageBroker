@@ -1,20 +1,27 @@
-import React, {Component} from "react";
+import React from "react";
 import styles from "./channel.module.css"
+import {connect} from "react-redux";
+import {Types} from "../../../../redux/action-types/action-types";
 
-class Channel extends Component {
-    render() {
-        return (
-            <div className={styles.channel}>
-                <div className={styles.img}>
+const Channel = (props) => {
+    return (
+        <div className={styles.channel} onClick={() => props.onCurrentChannel(props.channel.id)}>
+            <div className={styles.img}>
 
-                </div>
-                <div className={styles.channelName}>
-                    {this.props.channel}
-                </div>
             </div>
-        )
-    }
+            <div className={styles.channelName}>
+                {props.channel.channelName}
+            </div>
+        </div>
+    )
 }
 
 
-export default Channel;
+export default connect(
+    state => ({}),
+    dispatch => ({
+        onCurrentChannel: (id) => {
+            dispatch({type: Types.SELECT_CURRENT_CHANNEL, payload: id})
+        }
+    })
+)(Channel);

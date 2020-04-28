@@ -1,31 +1,13 @@
 import React, {Component} from "react";
-import styles from "./createChannelWindow.module.css"
+import styles from "./create-channel-window.module.css"
 import {connect} from "react-redux";
-import {addChannel} from "../../../../services/http-service";
-import {getChannelsAction} from "../../../../redux/actions/channelsAction";
+import {addChannelAction} from "../../../../redux/actions/channels-actions";
 
 class CreateChannelWindow extends Component {
     constructor(props) {
         super(props);
         this.makeNewChannelMessage = this.makeNewChannelMessage.bind(this);
-        this.addChannel = this.addChannel.bind(this);
     }
-
-    async addChannel(newChannelMessage) {
-        addChannel(newChannelMessage).then(response => {
-            if (response.ok) {
-                this.props.onCreateChannelWindow();
-                this.props.onChannels(this.props.token);
-
-            } else {
-                throw new Error('Error');
-            }
-        }).catch(err => {
-            alert("Не удалось создать канал");
-            console.log(err)
-        });
-    }
-
 
     makeNewChannelMessage() {
         if (!this.channelName.value.length) {
@@ -35,8 +17,8 @@ class CreateChannelWindow extends Component {
             token: this.props.token,
             channelName: this.channelName.value
         };
-
-        this.addChannel(newChannelMessage);
+        this.channelName.value = '';
+        this.props.onChannels(newChannelMessage);
     }
 
     render() {
@@ -47,10 +29,10 @@ class CreateChannelWindow extends Component {
                 <div className={styles.window}>
                     <div className={styles.titleContainer}>
                         <div className={styles.title}>Create new channel</div>
-                        <div className={styles.closeButton}
-                             onClick={
-                                 this.props.onCreateChannelWindow
-                             }>X
+                        <div
+                            className={styles.closeButton}
+                            onClick={this.props.onCreateChannelWindow}>
+                            X
                         </div>
                     </div>
 
@@ -75,11 +57,8 @@ export default connect(
         token: state.auth.token.token
     }),
     dispatch => ({
-        onCreateChannelWindow: () => {
-            dispatch({type: 'HIDE_CREATE_CHANNEL_WINDOW'})
-        },
-        onChannels: (token) => {
-            dispatch(getChannelsAction(token))
+        onChannels: (newChannelMessage) => {
+            dispatch(addChannelAction(newChannelMessage))
         }
     })
 )(CreateChannelWindow);

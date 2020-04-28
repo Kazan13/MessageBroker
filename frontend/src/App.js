@@ -4,7 +4,7 @@ import SignIn from "./components/auth/sign_in/sign_in";
 import Content from "./components/content/content";
 import Header from "./components/content/header/header";
 import Footer from "./components/content/footer/footer";
-import CreateChannelWindow from "./components/content/channels/createChannelWindow/createChannelWindow";
+import CreateChannelWindow from "./components/content/channels/createChannelWindow/create-channel-window";
 import {connect} from "react-redux";
 
 const App = (props) => {

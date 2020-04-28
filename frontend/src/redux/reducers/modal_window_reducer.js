@@ -5,7 +5,7 @@ const initialState = {
     messenger: {isVisible: false}
 }
 
-export default function modalWindowReducer(state = initialState, action) {
+export const modalWindowReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SHOW_SIGN_IN_WINDOW': {
             return {

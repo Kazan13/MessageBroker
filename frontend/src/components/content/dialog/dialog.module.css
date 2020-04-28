@@ -1,5 +1,6 @@
 .dialog {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     width: 70vw;
     border: 0.1em solid #5b5b5b;
@@ -12,4 +13,9 @@
     margin: 0.5vw;
     border: 0.1em solid #5b5b5b;
     border-radius: 1em;
+}
+
+.messageInput {
+    display: flex;
+    flex-direction: row;
 }

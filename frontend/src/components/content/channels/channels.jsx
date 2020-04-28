@@ -5,8 +5,8 @@ import {connect} from "react-redux";
 
 let Channels = (props) => {
     let channels = [];
-    for (let [key, value] of props.channels) {
-        channels.push(value.channelName);
+    for (let channel of props.channels.values()) {
+        channels.push(channel);
     }
     return (
         <div className={styles.channels}>

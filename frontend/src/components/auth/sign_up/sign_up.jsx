@@ -1,24 +1,12 @@
 import React, {Component} from "react";
 import styles from "./sign_up.module.css";
 import {connect} from "react-redux";
-import {signUp} from "../../../services/http-service";
+import {signUpAction} from "../../../redux/actions/auth-actions";
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
-        this.signUp = this.signUp.bind(this);
         this.makeUser = this.makeUser.bind(this);
-    }
-
-    async signUp(user) {
-        await signUp(user).then(response => {
-            if (response.ok) {
-                this.props.onSignUpLayer();
-                this.props.onSignInLayer();
-            } else {
-                throw new Error('unauthorized');
-            }
-        }).catch(err => console.log(err));
     }
 
     makeUser() {
@@ -31,7 +19,7 @@ class SignUp extends Component {
         };
         this.password.value = '';
         this.username.value = '';
-        this.signUp(user);
+        this.props.onSignUp(user);
     }
 
 
@@ -90,6 +78,9 @@ export default connect(
         },
         onSignInLayer: () => {
             dispatch({type: 'SHOW_SIGN_IN_WINDOW'})
+        },
+        onSignUp: (user) => {
+            dispatch(signUpAction(user));
         }
     })
 )(SignUp);
