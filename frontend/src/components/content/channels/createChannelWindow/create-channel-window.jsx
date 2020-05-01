@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import styles from "./create-channel-window.module.css"
 import {connect} from "react-redux";
 import {addChannelAction} from "../../../../redux/actions/channels-actions";
+import {Types} from "../../../../redux/action-types/action-types";
 
 class CreateChannelWindow extends Component {
     constructor(props) {
@@ -59,6 +60,9 @@ export default connect(
     dispatch => ({
         onChannels: (newChannelMessage) => {
             dispatch(addChannelAction(newChannelMessage))
+        },
+        onCreateChannelWindow: () => {
+            dispatch({type: Types.HIDE_CREATE_CHANNEL_WINDOW})
         }
     })
 )(CreateChannelWindow);

@@ -3,7 +3,7 @@ package com.ainur.broker.models.messages;
 
 public class Subscribe {
     private String token;
-    private String channelName;
+    private String channelId;
 
     public String getToken() {
         return token;
@@ -14,11 +14,11 @@ public class Subscribe {
     }
 
 
-    public String getChannelName() {
-        return channelName;
+    public String getChannelId() {
+        return channelId;
     }
 
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 }

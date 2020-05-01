@@ -1,26 +1,54 @@
 import React, {Component} from "react";
 import styles from "./dialog.module.css"
 import {connect} from "react-redux";
+import {sendMessageAction} from "../../../redux/actions/ws-actions";
 
-const Dialog = (props) => {
-    return (
-        <div className={styles.dialog}>
-            <div className={styles.messages}>
+class Dialog extends Component{
+    constructor(props) {
+        super(props);
+        this.createNewMessage = this.createNewMessage.bind(this);
+    }
 
-            </div>
+    createNewMessage() {
+        if (!this.message.value.length) {
+            return;
+        }
+        const newMessage = {
+            token: this.props.token,
+            channelId: this.props.channelId,
+            message: this.message.value,
+            date: new Date()
+        };
+        this.message.value = '';
+        this.props.sendMessage(newMessage);
+    }
 
-            <div className={styles.messageInput}>
-                <div className="input">
-                    <input type="text"/>
+
+    render() {
+        return (
+            <div className={styles.dialog}>
+                <div className={styles.messages}>
+
                 </div>
-                <div className="inputButton">
-                    <button>
-                        Send
-                    </button>
+
+                <div className={styles.messageInput}>
+                    <div className="input">
+                        <input
+                            type="text"
+                            placeholder="message"
+                            ref={(input => {
+                                this.message = input
+                            })}/>
+                    </div>
+                    <div className="inputButton">
+                        <button onClick={this.createNewMessage}>
+                            Send
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 

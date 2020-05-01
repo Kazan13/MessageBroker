@@ -18,3 +18,13 @@
     border: 0.1em solid #5b5b5b;
     margin-right: auto;
 }
+
+.logOutButton{
+    border: 0.1em solid #5b5b5b;
+    margin-left: auto;
+}
+
+.searchChannelsButton {
+    border: 0.1em solid #5b5b5b;
+    margin-left: auto;
+}

@@ -6,11 +6,16 @@ import Header from "./components/content/header/header";
 import Footer from "./components/content/footer/footer";
 import CreateChannelWindow from "./components/content/channels/createChannelWindow/create-channel-window";
 import {connect} from "react-redux";
+import SplashScreen from "./components/loading-window/splash-screen";
+import SearchChannelsWindow from "./components/content/channels/searchChannelsWindow/search-channels-window";
 
 const App = (props) => {
+
     let messengerVisibleStyle = props.messenger ? {display: 'block'} : {display: 'none'};
     return (
         <div className="App">
+            <SearchChannelsWindow />
+            <SplashScreen/>
             <SignUp/>
             <SignIn/>
             <div style={messengerVisibleStyle}>

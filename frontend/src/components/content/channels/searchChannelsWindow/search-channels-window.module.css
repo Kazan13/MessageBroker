@@ -1,0 +1,47 @@
+.layer {
+    z-index: 1;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.window {
+    z-index: 2;
+    width: 20vw;
+    height: 15vh;
+    position: absolute;
+    border: 0.1em solid #5b5b5b;
+
+}
+
+.titleContainer{
+    display: flex;
+    flex-direction: row;
+}
+.title {
+    margin-left: 0.1vw;
+    border: 0.1em solid #5b5b5b;
+    height: 3vh;
+    width: 10vw;
+
+}
+
+.closeButton {
+    margin-left: auto;
+    margin-right: 0.1em;
+    border: 0.1em solid #5b5b5b;
+    height: 2vh;
+    width: 1vw;
+}
+
+.form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.channels {
+
+}

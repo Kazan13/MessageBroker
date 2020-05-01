@@ -1,13 +1,17 @@
+import {Types} from "../action-types/action-types";
+
 const initialState = {
-    signInWindow: {isVisible: true},
+    signInWindow: {isVisible: false},
     signUpWindow: {isVisible: false},
     createChannelWindow: {isVisible: false},
-    messenger: {isVisible: false}
+    searchChannelWindow: {isVisible: false},
+    messenger: {isVisible: false},
+    splashScreen: {isVisible: true}
 }
 
 export const modalWindowReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SHOW_SIGN_IN_WINDOW': {
+        case Types.SHOW_SIGN_IN_WINDOW: {
             return {
                 ...state,
                 signInWindow: {
@@ -15,7 +19,7 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'HIDE_SIGN_IN_WINDOW': {
+        case Types.HIDE_SIGN_IN_WINDOW: {
             return {
                 ...state,
                 signInWindow: {
@@ -23,7 +27,7 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'SHOW_SIGN_UP_WINDOW': {
+        case Types.SHOW_SIGN_UP_WINDOW: {
             return {
                 ...state,
                 signUpWindow: {
@@ -31,7 +35,7 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'HIDE_SIGN_UP_WINDOW': {
+        case Types.HIDE_SIGN_UP_WINDOW: {
             return {
                 ...state,
                 signUpWindow: {
@@ -39,7 +43,7 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'SHOW_CREATE_CHANNEL_WINDOW': {
+        case Types.SHOW_CREATE_CHANNEL_WINDOW: {
             return {
                 ...state,
                 createChannelWindow: {
@@ -47,7 +51,7 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'HIDE_CREATE_CHANNEL_WINDOW': {
+        case Types.HIDE_CREATE_CHANNEL_WINDOW: {
             return {
                 ...state,
                 createChannelWindow: {
@@ -55,7 +59,7 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'SHOW_MESSENGER': {
+        case Types.SHOW_MESSENGER: {
             return {
                 ...state,
                 messenger: {
@@ -63,10 +67,34 @@ export const modalWindowReducer = (state = initialState, action) => {
                 }
             }
         }
-        case 'HIDE_MESSENGER': {
+        case Types.HIDE_MESSENGER: {
             return {
                 ...state,
                 messenger: {
+                    isVisible: false
+                }
+            }
+        }
+        case Types.SHOW_SEARCH_CHANNEL_WINDOW: {
+            return {
+                ...state,
+                searchChannelWindow: {
+                    isVisible: true
+                }
+            }
+        }
+        case Types.HIDE_SEARCH_CHANNEL_WINDOW: {
+            return {
+                ...state,
+                searchChannelWindow: {
+                    isVisible: false
+                }
+            }
+        }
+        case Types.HIDE_SPLASH_SCREEN: {
+            return {
+                ...state,
+                splashScreen: {
                     isVisible: false
                 }
             }

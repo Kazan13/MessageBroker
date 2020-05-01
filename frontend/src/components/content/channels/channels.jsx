@@ -3,6 +3,12 @@ import styles from "./channels.module.css";
 import Channel from "./channel/channel";
 import {connect} from "react-redux";
 
+/**
+ * User Channels List
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 let Channels = (props) => {
     let channels = [];
     for (let channel of props.channels.values()) {

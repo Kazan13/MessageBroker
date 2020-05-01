@@ -55,8 +55,10 @@ public class MySQLRepository {
                     "FOREIGN KEY (channel_id) REFERENCES channels(id) );";
     private static final String INSERT_USER = "insert into users " +
             "(username, password) values (?,?);";
-    private static final String GET_ALL_CHANNELS =
+    private static final String GET_USER_CHANNELS =
             "select * from subscriptions where subscriber_id = ?";
+    private static final String GET_ALL_CHANNELS =
+            "select * from channels";
     private static final String GET_USER =
             " select * from users where username = ?";
     private static final String INSERT_CHANNEL =
@@ -82,6 +84,10 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isTokenValid(Token token) {
+        return TokensStorage.getTokenStorage().isTokenValid(token.getToken());
     }
 
     public Token signIn(User user) {
@@ -114,12 +120,20 @@ public class MySQLRepository {
         }
     }
 
-    public Channels getAllChannels(Token token) {
+    public boolean logOut(Token token) {
+        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        if (isTokenValid(token)) {
+            TokensStorage.getTokenStorage().removeToken(token.getToken());
+        }
+        return true;
+    }
+
+    public Channels getUserChannels(Token token) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
         Channels channels = new Channels();
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHANNELS);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_CHANNELS);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -132,6 +146,25 @@ public class MySQLRepository {
                     channel.setId(result.getInt(1));
                     channels.addChannel(channel);
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return channels;
+    }
+
+
+    public Channels getAllChannels(Token token) {
+        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        Channels channels = new Channels();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHANNELS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Channel channel = new Channel();
+                channel.setChannelName(resultSet.getString(2));
+                channel.setId(resultSet.getInt(1));
+                channels.addChannel(channel);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -273,8 +306,8 @@ public class MySQLRepository {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         int userId = TokensStorage.getTokenStorage().getUserId(subscribe.getToken());
         Connection connection = dataSource.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
-        preparedStatement.setString(1, subscribe.getChannelName());
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
+        preparedStatement.setString(1, subscribe.getChannelId());
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             int channelId = Integer.parseInt(resultSet.getString(1));
