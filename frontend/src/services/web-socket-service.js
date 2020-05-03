@@ -1,4 +1,4 @@
-const setupSocket = (dispatch, message) => {
+const setupSocket = () => {
     const socket = new WebSocket('ws://localhost:8090');
 
     socket.onopen = event => {
@@ -7,6 +7,7 @@ const setupSocket = (dispatch, message) => {
 
     socket.onmessage = event => {
         let message = JSON.parse(event.data);
+        console.log(message)
     }
 
     socket.onclose = event => {

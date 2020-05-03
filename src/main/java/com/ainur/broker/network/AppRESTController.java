@@ -50,7 +50,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             User user = gson.fromJson(request.getReader(), User.class);
-            log.info("sign in message from user: " + user.getUsername());
+            log.info("AppRESTController.signIn() :" + user.getUsername());
             Token token = this.mySQLRepository.signIn(user);
 
             Cookie cookie = new Cookie("token", token.getToken());
@@ -83,7 +83,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             User user = gson.fromJson(request.getReader(), User.class);
-            log.info("sign up message from user:" + user.getUsername());
+            log.info("AppRESTController.signUp() :" + user.getUsername());
             return this.mySQLRepository.signUp(user) ?
                     new ResponseEntity(HttpStatus.OK) :
                     new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -108,7 +108,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
-            log.info("get user channels message");
+            log.info("AppRESTController.getUserChannels()");
             return new ResponseEntity(this.mySQLRepository.getUserChannels(token), HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,7 +130,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             AddChannel addChannel = gson.fromJson(request.getReader(), AddChannel.class);
-            log.info("get \"add channel\" message");
+            log.info("AppRESTController.addChannel()");
             if (this.mySQLRepository.createChannel(addChannel)) {
                 return new ResponseEntity(HttpStatus.OK);
             } else
@@ -158,7 +158,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Subscribe subscribe = gson.fromJson(request.getReader(), Subscribe.class);
-            log.info("get \"subscribe\" message");
+            log.info("AppRESTController.subscribe()");
             if (this.mySQLRepository.subscribe(subscribe)) {
                 return new ResponseEntity(HttpStatus.OK);
             } else
@@ -187,7 +187,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
-            log.info("get \"is token valid\" message");
+            log.info("AppRESTController.isTokenValid()");
             if (this.mySQLRepository.isTokenValid(token)) {
                 return new ResponseEntity(HttpStatus.OK);
             } else {
@@ -214,7 +214,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
-            log.info("get \"log out\" message");
+            log.info("AppRESTController.logOut()");
             if (this.mySQLRepository.logOut(token)) {
                 return new ResponseEntity(HttpStatus.OK);
             } else {
@@ -241,7 +241,7 @@ public class AppRESTController {
         log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
-            log.info("get \"get all channels\" message");
+            log.info("AppRESTController.getAllChannels()");
             return new ResponseEntity(this.mySQLRepository.getAllChannels(token), HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();

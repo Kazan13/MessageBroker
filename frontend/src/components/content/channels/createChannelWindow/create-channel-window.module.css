@@ -36,6 +36,12 @@
     width: 1vw;
 }
 
+.createButton {
+    margin-left: auto;
+    margin-right: 0.1em;
+    border: 0.1em solid #5b5b5b;
+}
+
 .form{
     display: flex;
     align-items: center;

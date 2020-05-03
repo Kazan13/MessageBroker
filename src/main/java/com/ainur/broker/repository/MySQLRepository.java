@@ -95,7 +95,7 @@ public class MySQLRepository {
         UUID uuid = UUID.randomUUID();
         Token token = new Token();
         if (isLoginPasswordValid(user)) {
-            log.info("Sign In: " + user.getUsername());
+            log.info("MySQLRepository.signIn(): username:" + user.getUsername());
             TokensStorage.getTokenStorage().addToken(uuid.toString(), getUserId(user));
             token.setToken(uuid.toString());
         }
@@ -110,7 +110,7 @@ public class MySQLRepository {
                 preparedStatement.setString(1, user.getUsername());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.executeUpdate();
-                log.info("Sign Up: " + user.getUsername());
+                log.info("MySQLRepository.signUp(): username: "+ user.getUsername());
                 return true;
             } else
                 return false;
@@ -122,6 +122,8 @@ public class MySQLRepository {
 
     public boolean logOut(Token token) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.logOut(): userId:"
+                + TokensStorage.getTokenStorage().getUserId(token.getToken()));
         if (isTokenValid(token)) {
             TokensStorage.getTokenStorage().removeToken(token.getToken());
         }
@@ -131,6 +133,7 @@ public class MySQLRepository {
     public Channels getUserChannels(Token token) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
+        log.info("MySQLRepository.getUserChannels(): userId:" + userId);
         Channels channels = new Channels();
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_CHANNELS);
@@ -157,6 +160,7 @@ public class MySQLRepository {
     public Channels getAllChannels(Token token) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         Channels channels = new Channels();
+        log.info("MySQLRepository.getAllChannels(): userId:" + TokensStorage.getTokenStorage().getUserId(token.getToken()));
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHANNELS);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -174,6 +178,7 @@ public class MySQLRepository {
 
     public boolean isUserExists(User user) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.isUserExists(): userName:" + user.getUsername());
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
@@ -187,6 +192,7 @@ public class MySQLRepository {
 
     public boolean isChannelExists(String channelName) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.isChannelExists()");
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
             preparedStatement.setString(1, channelName);
@@ -200,6 +206,7 @@ public class MySQLRepository {
 
     public boolean isLoginPasswordValid(User user) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.isLoginPasswordValid()");
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
@@ -217,6 +224,7 @@ public class MySQLRepository {
 
     public int getUserId(User user) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.getUserId()");
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
@@ -232,6 +240,7 @@ public class MySQLRepository {
 
     public String getUserName(String sql) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.getUserName()");
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -247,6 +256,7 @@ public class MySQLRepository {
 
     public String getChannelId(String sql) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.getChannelId()");
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -262,6 +272,7 @@ public class MySQLRepository {
 
     public ArrayList<Integer> getSubscribersId(String sql) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.getSubscribersId()");
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -278,6 +289,7 @@ public class MySQLRepository {
 
     public void publish(Publish publish) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.publish()");
         Gson gson = new Gson();
         int userId = TokensStorage.getTokenStorage().getUserId(publish.getToken());
         WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
@@ -304,6 +316,7 @@ public class MySQLRepository {
 
     public boolean subscribe(Subscribe subscribe) throws SQLException {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.subscribe()");
         int userId = TokensStorage.getTokenStorage().getUserId(subscribe.getToken());
         Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
@@ -323,6 +336,7 @@ public class MySQLRepository {
 
     public boolean createChannel(AddChannel addChannel) throws SQLException {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
+        log.info("MySQLRepository.createChannel()");
         Gson gson = new Gson();
         int userId = TokensStorage.getTokenStorage().getUserId(addChannel.getToken());
         Connection connection = dataSource.getConnection();

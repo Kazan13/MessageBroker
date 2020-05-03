@@ -1,12 +1,15 @@
+import {getCookie} from "../getCookie";
+import {Types} from "../action-types/action-types";
+
 const initialState = {
     token: {
-        token: ''
+        token: getCookie('token')
     }
 };
 
 export const tokenReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_TOKEN': {
+        case Types.SET_TOKEN: {
             return {
                 ...state,
                 token: {

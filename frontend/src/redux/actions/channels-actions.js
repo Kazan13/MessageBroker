@@ -1,4 +1,4 @@
-import {addChannel, getAllChannels, getUserChannels} from "../../services/http-service";
+import {addChannel, getAllChannels, getUserChannels, subscribe} from "../../services/http-service";
 import {Types} from "../action-types/action-types";
 
 /**
@@ -70,8 +70,13 @@ export const addChannelAction = (newChannelMessage) => dispatch => {
     });
 };
 
+/**
+ * subscribe
+ * @param subscribeMessage
+ * @returns {function(...[*]=)}
+ */
 export const subscribeAction = (subscribeMessage) => dispatch => {
-    addChannel(subscribeMessage).then(response => {
+    subscribe(subscribeMessage).then(response => {
         if (response.ok) {
             dispatch({type: Types.HIDE_SEARCH_CHANNEL_WINDOW});
             dispatch(getUserChannelsAction(subscribeMessage.token));

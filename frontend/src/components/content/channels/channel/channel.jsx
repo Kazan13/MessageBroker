@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Types} from "../../../../redux/action-types/action-types";
 
 /**
- *Channel from user channels list
+ * Канал для списка каналов
  * @param props
  * @returns {*}
  * @constructor

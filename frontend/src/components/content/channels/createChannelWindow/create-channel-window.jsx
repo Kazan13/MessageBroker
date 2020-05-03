@@ -1,56 +1,57 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 import styles from "./create-channel-window.module.css"
 import {connect} from "react-redux";
 import {addChannelAction} from "../../../../redux/actions/channels-actions";
 import {Types} from "../../../../redux/action-types/action-types";
 
-class CreateChannelWindow extends Component {
-    constructor(props) {
-        super(props);
-        this.makeNewChannelMessage = this.makeNewChannelMessage.bind(this);
-    }
+/**
+ * Окно создания канала
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
+const CreateChannelWindow = (props) => {
 
-    makeNewChannelMessage() {
-        if (!this.channelName.value.length) {
-            return;
-        }
-        const newChannelMessage = {
-            token: this.props.token,
-            channelName: this.channelName.value
-        };
-        this.channelName.value = '';
-        this.props.onChannels(newChannelMessage);
-    }
+    let [createInput, changeCreateChannel] = useState(undefined);
 
-    render() {
-        let windowVisibleStile = this.props.createChannelWindow ? {display: 'flex'} : {display: 'none'};
-        return (
-            <div style={windowVisibleStile}
-                 className={styles.layer}>
-                <div className={styles.window}>
-                    <div className={styles.titleContainer}>
-                        <div className={styles.title}>Create new channel</div>
-                        <div
-                            className={styles.closeButton}
-                            onClick={this.props.onCreateChannelWindow}>
-                            X
-                        </div>
+
+    let windowVisibleStile = props.createChannelWindow ? {display: 'flex'} : {display: 'none'};
+    return (
+        <div style={windowVisibleStile}
+             className={styles.layer}>
+            <div className={styles.window}>
+                <div className={styles.titleContainer}>
+                    <div className={styles.title}>Create new channel</div>
+                    <div
+                        className={styles.closeButton}
+                        onClick={props.onCreateChannelWindow}>
+                        X
                     </div>
+                </div>
 
-                    <div className={styles.form}>
-                        <input
-                            type="text"
-                            placeholder="channel name"
-                            ref={(input => {
-                                this.channelName = input
-                            })}/>
-                        <button onClick={this.makeNewChannelMessage}>create</button>
+                <div className={styles.form}>
+                    <input
+                        type="text"
+                        placeholder="channel name"
+                        ref={(input => {
+                            changeCreateChannel(input)
+                        })}/>
+                    <div className={styles.createButton} onClick={() => {
+                        if (createInput.value !== '') {
+                            props.onChannels(
+                                {
+                                    token: props.token,
+                                    channelName: createInput.value
+                                });
+                            createInput.value = '';
+                        }
+                    }}>create
                     </div>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default connect(
     state => ({
