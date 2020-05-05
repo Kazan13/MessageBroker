@@ -13,44 +13,47 @@ const SignIn = (props) => {
     return (
         <div style={layerVisibleStyle} className={styles.signInPage}>
             <div className={styles.container}>
-                <h1 className="title">Sign In</h1>
+                <div className={styles.title}>Вход в аккаунт</div>
+                <div className={styles.title2}>Пожалуйста, войдите в свой аккаунт</div>
                 <div className={styles.form}>
                     <div className={styles.input}>
-                        <input
-                            type="text"
-                            placeholder="username"
-                            onChange={event => {
-                                changeUsername(event.target.value);
-                            }}
+                        <input className={styles.usernameInput}
+                               type="text"
+                               placeholder="username"
+                               onChange={event => {
+                                   changeUsername(event.target.value);
+                               }}
                         />
                     </div>
                     <div className={styles.input}>
-                        <input
-                            type="password"
-                            placeholder="password"
-                            onChange={event => {
-                                changePassword(event.target.value);
-                            }}
+                        <input className={styles.passwordInput}
+                               type="password"
+                               placeholder="password"
+                               onChange={event => {
+                                   changePassword(event.target.value);
+                               }}
                         />
                     </div>
                     <div>
-                        <button onClick={() => {
+                        <div className={styles.signInButton} onClick={() => {
                             props.onSignIn({
                                 username: usernameInput,
                                 password: passwordInput
                             });
                         }}>
-                            SignIn
-                        </button>
+                            Войти
+                        </div>
+
+                        <div className={styles.signUpButton} onClick={() => {
+                            props.onSignUpWindow();
+                            props.onSignInWindow();
+                        }}>
+                            Зарегистрироваться
+                        </div>
+
                     </div>
                 </div>
 
-                <button onClick={() => {
-                    props.onSignUpWindow();
-                    props.onSignInWindow();
-                }}>
-                    SignUp
-                </button>
             </div>
         </div>
     )

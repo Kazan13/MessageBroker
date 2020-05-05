@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     width: 70vw;
-    border: 0.1em solid #5b5b5b;
 }
 
 .messages {
@@ -11,11 +10,28 @@
     height: 60vh;
     padding: 0.5vw;
     margin: 0.5vw;
-    border: 0.1em solid #5b5b5b;
+    background-color: white;
     border-radius: 1em;
 }
 
-.messageInput {
+.messageInputForm {
     display: flex;
     flex-direction: row;
+    margin: 1vw;
+}
+
+.messageInput {
+    height: 4vh;
+    width: 40vw;
+    border-radius: 4px;
+    margin: 0 1vw 0 0;
+}
+
+.inputButton {
+    text-align: center;
+    padding: 1vh 0 0 0;
+    height: 4vh;
+    width: 4vw;
+    border-radius: 4px;
+    background-color: #4CA5FF;
 }

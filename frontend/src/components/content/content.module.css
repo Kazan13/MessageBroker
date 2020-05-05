@@ -3,7 +3,19 @@
     flex-direction: row;
     justify-content: space-between;
     width: 70vw;
-    height: 80vh;
+    height: 78vh;
     margin: 0 auto;
-    border: 0.1em solid #5b5b5b;
+    background-color: #ffffff;
+}
+
+.line {
+    /* Line */
+    /*position: absolute;*/
+    left: 32.57%;
+    right: 67.36%;
+    top: 0;
+    bottom: -0.1%;
+
+    background: #FFFFFF;
+    border: 1px solid rgba(230, 233, 237, 0.4);
 }

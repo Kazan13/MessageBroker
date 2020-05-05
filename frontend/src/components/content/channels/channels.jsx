@@ -4,7 +4,7 @@ import Channel from "./channel/channel";
 import {connect} from "react-redux";
 
 /**
- * User Channels List
+ * СПисок каналов
  * @param props
  * @returns {*}
  * @constructor

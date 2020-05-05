@@ -9,17 +9,17 @@ const Dialog = (props) => {
     let [messageInput, changeMessage] = useState(undefined);
 
     const createNewMessage = () => {
-        if (messageInput.value === '') {
-            console.log('message.value===null')
-            return;
-        }
+        // if (messageInput.value === '') {
+        //     console.log('message.value===null')
+        //     return;
+        // }
         const newMessage = {
             token: props.token,
             channelId: props.channelId,
             message: messageInput.value,
             date: new Date()
         };
-        console.log(messageInput.value)
+        props.ws.sendMessage(JSON.stringify(newMessage));
 
         props.sendMessage(newMessage);
         messageInput.value = '';
@@ -31,16 +31,16 @@ const Dialog = (props) => {
 
             </div>
 
-            <div className={styles.messageInput}>
-                <div className="input">
-                    <input
+            <div className={styles.messageInputForm}>
+                <div>
+                    <input className={styles.messageInput}
                         type="text"
                         placeholder="message"
                         ref={(input => {
                             changeMessage(input);
                         })}/>
                 </div>
-                <div className="inputButton">
+                <div className={styles.inputButton}>
                     <div onClick={() => {
                         createNewMessage();
                     }}>

@@ -14,22 +14,23 @@ import {getAllChannelsAction} from "../../../redux/actions/channels-actions";
 const Header = (props) => {
     return (
         <header className={styles.header}>
-            <div>
-                <div className={styles.addChannelButton} onClick={() => {
-                    props.onCreateChannelWindow()
-                }}>Creat new channel</div>
+            <div className={styles.buttons}>
+                <div className={styles.channelsButtons}>
+                    <div className={styles.searchChannelsButton} onClick={() => {
+                        props.onSearchChannelWindow(props.token.token)
+                    }}>Search Channels
+                    </div>
+
+                    <div className={styles.addChannelButton} onClick={() => {
+                        props.onCreateChannelWindow()
+                    }}>Creat new channel
+                    </div>
+                </div>
 
                 <div className={styles.logOutButton} onClick={() => {
                     props.onLogOut(props.token)
-                }}>Log Out</div>
-
-                <div className={styles.searchChannelsButton} onClick={() => {
-                    props.onSearchChannelWindow(props.token.token)
-                }}>Search Channels</div>
-            </div>
-
-            <div>
-                <h2>Header</h2>
+                }}>Log Out
+                </div>
             </div>
         </header>
     );

@@ -1,65 +1,112 @@
 .signInPage{
-    background-color: #161616;
-    height: 100vh;
-    font-family: 'Spartan', sans-serif;
+    height: 98vh;
+    width: 99vw;
+    font-family: Roboto, serif;
     display: flex;
     align-content: center;
     align-items: center;
 }
 
-
-* {
-    color: black;
-    margin: 0;
-}
-
-.title {
-    margin-bottom: 10px;
-}
-
 .container {
-    width: 400px;
-    height: 300px;
-    background-color: #aeaeae;
+    width: 25vw;
+    height: 40vh;
+    background-color: #ffffff;
     border-radius: 5px;
     margin: 0 auto;
-    padding: 25px;
-
     text-align: center;
 }
+
+
+.title {
+    font-size: 4vh;
+    margin: 2vh 0 2vh 0;
+    background-color: #ffffff;
+}
+
+.title2 {
+    font-size: 2vh;
+    margin: 1vh 0 5vh 0;
+    background-color: #ffffff;
+    color: black;
+    opacity: 50%;
+}
+
 
 .form {
     display: grid;
 }
 
 .input {
-    height: 20px;
-    border: none;
-    padding: 5px 10px;
-    margin: 5px 0;
+
+}
+
+
+.usernameInput {
+    text-align: center;
+    font-size: 2vh;
+    height: 2.5vh;
+    width: 10vw;
+    border-top-width: 0.1vh;
+    border-right-width: 0.1vw;
+    border-left-width: 0.1vw;
+    border-bottom-width: 0.1vh;
+    border-color: rgba(131, 131, 131, 0.22);
+    padding: 0.9vh 2vw;
+    margin: 0 0 2vh ;
     color: #161616;
-    border-radius: 5px;
+    border-radius: 4px;
+}
+
+.passwordInput {
+    text-align: center;
+    font-size: 2vh;
+    height: 2.5vh;
+    width: 10vw;
+    border-top-width: 0.1vh;
+    border-right-width: 0.1vw;
+    border-left-width: 0.1vw;
+    border-bottom-width: 0.1vh;
+    border-color: rgba(131, 131, 131, 0.22);
+    padding: 0.9vh 2vw;
+    margin: 0 0 2vh ;
+    color: #161616;
+    border-radius: 4px;
 }
 
 input:focus {
     outline: none;
 }
 
-button {
-    background-color: #161616;
+.signInButton {
+    font-size: 2vh;
+    background-color: #4CA5FF;
     margin: 0 auto;
-    width: 100px;
-    height: 30px;
-    color: rgba(206, 205, 212, 0.75);
-    outline: none;
-    border: none;
-    border-radius: 10px;
-    transition: color 0.5s linear, background-color 0.5s linear;
+    padding: 1vh;
+    height: 3vh;
+    width: 13vw;
+    color: #ffffff;
+    border-radius: 4px;
+
+    cursor: pointer;
 }
 
-button:hover {
-    background-color: white;
+.signUpButton {
+    font-size: 2vh;
+    margin: 0 auto;
+    padding: 1vh;
+    height: 3vh;
+    width: 13vw;
+    color: rgba(91, 91, 91, 0.75);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.signInButton:hover {
     color: #161616;
     cursor: pointer;
+}
 
+.signUpButton:hover {
+    color: #161616;
+    cursor: pointer;
 }

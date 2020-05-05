@@ -9,11 +9,12 @@ import Dialog from "./dialog/dialog";
  * @returns {*}
  * @constructor
  */
-const Content = () => {
+const Content = (props) => {
         return (
             <div className={styles.content}>
                 <Channels/>
-                <Dialog/>
+                <div className={styles.line}></div>
+                <Dialog ws = {props.ws}/>
             </div>
         )
 }

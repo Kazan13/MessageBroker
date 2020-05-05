@@ -8,12 +8,13 @@ import CreateChannelWindow from "./components/content/channels/createChannelWind
 import {connect} from "react-redux";
 import SplashScreen from "./components/loading-window/splash-screen";
 import SearchChannelsWindow from "./components/content/channels/searchChannelsWindow/search-channels-window";
+import styles from './App.module.css';
 
 const App = (props) => {
 
     let messengerVisibleStyle = props.messenger ? {display: 'block'} : {display: 'none'};
     return (
-        <div className="App">
+        <div className={styles.App}>
             <SearchChannelsWindow />
             <SplashScreen/>
             <SignUp/>
@@ -21,7 +22,8 @@ const App = (props) => {
             <div style={messengerVisibleStyle}>
                 <CreateChannelWindow/>
                 <Header/>
-                <Content/>
+                <div className={styles.line}></div>
+                <Content ws = {props.ws}/>
                 <Footer/>
             </div>
         </div>
