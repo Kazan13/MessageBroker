@@ -2,10 +2,10 @@ package com.ainur.broker.repository;
 
 import com.ainur.broker.models.Channel;
 import com.ainur.broker.models.Channels;
+import com.ainur.broker.models.messages.Message;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;
 import com.ainur.broker.models.messages.AddChannel;
-import com.ainur.broker.models.messages.Publish;
 import com.ainur.broker.models.messages.Subscribe;
 import com.ainur.broker.models.User;
 import com.ainur.broker.models.Token;
@@ -47,7 +47,7 @@ public class MySQLRepository {
     private static final String CREATE_MESSAGES_TABLE =
             "CREATE TABLE if not exists messages " +
                     "(id int AUTO_INCREMENT NOT NULL  PRIMARY KEY," +
-                    "sent_time datetime not null," +
+                    "sent_time timestamp not null," +
                     "message TEXT not null," +
                     "sender_id int not null," +
                     "channel_id int not null," +
@@ -287,23 +287,24 @@ public class MySQLRepository {
         }
     }
 
-    public void publish(Publish publish) {
+    public void publish(Message message) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         log.info("MySQLRepository.publish()");
+        java.sql.Timestamp date = new java.sql.Timestamp(message.getDate().getTime());
         Gson gson = new Gson();
-        int userId = TokensStorage.getTokenStorage().getUserId(publish.getToken());
+        int userId = TokensStorage.getTokenStorage().getUserId(message.getToken());
         WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
-            preparedStatement.setString(1, publish.getChannelName());
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
+            preparedStatement.setString(1, message.getChannelId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int channelId = Integer.parseInt(resultSet.getString(1));
                 preparedStatement = connection.prepareStatement(INSERT_MESSAGE);
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setInt(2, channelId);
-                preparedStatement.setString(3, publish.getDateString());
-                preparedStatement.setString(4, publish.getMessage());
+                preparedStatement.setTimestamp(3, date, java.util.Calendar.getInstance());
+                preparedStatement.setString(4, message.getMessage());
                 preparedStatement.executeUpdate();
                 socket.send(gson.toJson(HttpStatus.OK));
             } else {

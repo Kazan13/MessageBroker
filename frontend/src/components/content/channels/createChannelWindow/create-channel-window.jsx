@@ -22,15 +22,14 @@ const CreateChannelWindow = (props) => {
             <div className={styles.window}>
                 <div className={styles.titleContainer}>
                     <div className={styles.title}>Create new channel</div>
-                    <div
-                        className={styles.closeButton}
+                    <div className={styles.closeButton}
                         onClick={props.onCreateChannelWindow}>
-                        X
+                         X
                     </div>
                 </div>
 
                 <div className={styles.form}>
-                    <input
+                    <input className={styles.input}
                         type="text"
                         placeholder="channel name"
                         ref={(input => {

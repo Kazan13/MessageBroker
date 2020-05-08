@@ -1,30 +1,29 @@
 package com.ainur.broker.models.messages;
 
-public class MessagePocket {
-    private String Sender;
-    private String channelName;
+import java.util.Date;
+
+public class Message {
+    private String senderId;
+    private String channelId;
     private String message;
-    private String sendDateString;
+    private long date;
     private String token;
 
-    public String getToken() {
-        return token;
+
+    public String getSenderId() {
+        return senderId;
     }
 
-    public String getSender() {
-        return Sender;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    public void setSender(String sender) {
-        Sender = sender;
+    public String getChannelId() {
+        return channelId;
     }
 
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     public String getMessage() {
@@ -35,11 +34,15 @@ public class MessagePocket {
         this.message = message;
     }
 
-    public String getSendDateString() {
-        return sendDateString;
+    public Date getDate() {
+        return new Date(this.date);
     }
 
-    public void setSendDateString(String sendDateString) {
-        this.sendDateString = sendDateString;
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

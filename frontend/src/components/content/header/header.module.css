@@ -9,7 +9,7 @@
 .buttons {
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .channelsButtons {
@@ -19,26 +19,31 @@
 }
 
 .addChannelButton {
+    text-align: center;
+    font-size: 7vh;
     margin-right: 0;
     background: #3674FF;
-    box-shadow: 0px 5px 5px rgba(54, 116, 255, 0.196733);
-    height: 3vh;
-    width: 10vw;
-    border-radius: 4px;
+    height: 8vh;
+    width: 4vw;
+    border-radius: 15vh;
+    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
 }
 
 .searchChannelsButton {
+    font-size: 2vh;
     margin-left: 0;
-    background-color: #4CA5FF;
+    background-color: #3674FF;
     height: 3vh;
     width: 10vw;
     border-radius: 4px;
+    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
 }
 
 .logOutButton{
     margin-left: auto;
-    background-color: #4CA5FF;
+    background-color: crimson;
     height: 3vh;
     width: 10vw;
     border-radius: 4px;
+    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
 }

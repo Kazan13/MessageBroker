@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import App from "./App";
 import {store} from "./redux/store";
-import WebSocketService from "./services/web-socket-service";
+import WebSocketController from "./services/web-socket-controller";
 
-let ws = new WebSocketService(store);
-ws.setupSocket();
+new WebSocketController();
 ReactDOM.render(
     <Provider store={store}>
-        <App ws = {ws}/>
+        <App />
     </Provider>,
     document.getElementById('root')
 );

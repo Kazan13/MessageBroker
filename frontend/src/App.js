@@ -23,7 +23,7 @@ const App = (props) => {
                 <CreateChannelWindow/>
                 <Header/>
                 <div className={styles.line}></div>
-                <Content ws = {props.ws}/>
+                <Content/>
                 <Footer/>
             </div>
         </div>

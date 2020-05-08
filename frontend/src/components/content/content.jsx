@@ -14,7 +14,7 @@ const Content = (props) => {
             <div className={styles.content}>
                 <Channels/>
                 <div className={styles.line}></div>
-                <Dialog ws = {props.ws}/>
+                <Dialog/>
             </div>
         )
 }

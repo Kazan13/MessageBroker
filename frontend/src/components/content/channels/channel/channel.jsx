@@ -11,7 +11,8 @@ import {Types} from "../../../../redux/action-types/action-types";
  */
 const Channel = (props) => {
     return (
-        <div className={styles.channel}>
+        <div className={styles.channel}
+             onClick={() => props.onCurrentChannel(props.channel.id)}>
             <div className={styles.img}>
                 <img src="https://i.ibb.co/YywFDHg/2020-05-04-22-39-01.jpg" alt="2020-05-04-22-39-01" border="0"/>
             </div>

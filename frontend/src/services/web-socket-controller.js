@@ -1,8 +1,8 @@
 import {store} from "./../redux/store";
 import {Types} from "./../redux/action-types/action-types";
-import {webSocketService} from './web-socket-controller';
+import {webSocket} from './web-socket';
 
-class WebSocketService  {
+class WebSocketController  {
 
     constructor() {
         this.sendMessage = this.sendMessage.bind(this);
@@ -10,15 +10,16 @@ class WebSocketService  {
     }
 
     setupSocket () {
-        let socket = webSocketService.socket;
+        let socket = webSocket.socket;
 
         socket.onopen = event => {
             console.log('Соединение установлено');
         };
 
         socket.onmessage = event => {
-            let message = JSON.parse(event.data);
-            store.dispatch({type: Types.NEW_MESSAGE, payload: message});
+            console.log(event.data);
+            // let message = JSON.parse(event.data);
+            // store.dispatch({type: Types.NEW_MESSAGE, payload: message});
         };
 
         socket.onclose = event => {
@@ -44,4 +45,4 @@ class WebSocketService  {
 
 }
 
-export default WebSocketService;
+export default WebSocketController;

@@ -1,10 +1,8 @@
 package com.ainur.broker;
 
-import com.ainur.broker.models.Message;
-import com.ainur.broker.models.messages.Publish;
+import com.ainur.broker.models.messages.Message;
 import com.ainur.broker.repository.MySQLRepository;
 import com.ainur.broker.storages.MessagesStorage;
-import com.ainur.broker.util.MessageType;
 import com.google.gson.Gson;
 
 
@@ -22,12 +20,8 @@ public class Worker extends Thread {
         while (true) {
             try {
                 Message message = MessagesStorage.getMessagesStorage().takeMessage();
-                switch (message.getCommand()) {
-                    case MessageType.PUBLISH: {
-                        publish(message);
-                        break;
-                    }
-                }
+                mySQLRepository.publish(message);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -36,10 +30,5 @@ public class Worker extends Thread {
 
     public void stopWorker() {
 
-    }
-
-    private void publish(Message message) {
-        Publish publish = gson.fromJson(message.getData(), Publish.class);
-        mySQLRepository.publish(publish);
     }
 }

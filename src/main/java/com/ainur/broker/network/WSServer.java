@@ -1,6 +1,6 @@
 package com.ainur.broker.network;
 
-import com.ainur.broker.models.Message;
+import com.ainur.broker.models.messages.Message;
 import com.ainur.broker.storages.MessagesStorage;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;
@@ -42,7 +42,7 @@ public class WSServer {
                 public void onMessage(WebSocket conn, String jsonMessage) {
                     Message message = gson.fromJson(jsonMessage, Message.class);
                     log.info("received message from "	+
-                            conn.getRemoteSocketAddress() + ": " + message.getData().toString());
+                            conn.getRemoteSocketAddress() + ": " + message.getMessage());
                     addMessage(message, conn);
                 }
                 @Override
@@ -57,7 +57,7 @@ public class WSServer {
     }
 
     public void addMessage(Message message, WebSocket socket) {
-        log.info("The message is received from conn.getRemoteSocketAddress()");
+        log.info("WSServer().addMessage()");
         if (message.getToken() != null &&
                 TokensStorage.getTokenStorage().isTokenValid(message.getToken())) {
             WebSocketsStorage.getWebSocketsStorage().addSocket(

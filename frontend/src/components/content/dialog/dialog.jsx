@@ -9,17 +9,15 @@ const Dialog = (props) => {
     let [messageInput, changeMessage] = useState(undefined);
 
     const createNewMessage = () => {
-        // if (messageInput.value === '') {
-        //     console.log('message.value===null')
-        //     return;
-        // }
+
+        console.log( props.token + ' ' +  props.channelId + '' + messageInput.value + ' ' + new Date())
+
         const newMessage = {
             token: props.token,
             channelId: props.channelId,
             message: messageInput.value,
-            date: new Date()
+            date: Date.now()
         };
-        props.ws.sendMessage(JSON.stringify(newMessage));
 
         props.sendMessage(newMessage);
         messageInput.value = '';
