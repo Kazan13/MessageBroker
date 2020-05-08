@@ -5,6 +5,11 @@ public class MessagePocket {
     private String channelName;
     private String message;
     private String sendDateString;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
 
     public String getSender() {
         return Sender;
