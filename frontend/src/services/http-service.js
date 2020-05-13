@@ -62,6 +62,18 @@ export const getUserChannels = (token) => {
 };
 
 /**
+ * Запрос истории сообщений
+ * @param token
+ * @returns {Promise<Response>}
+ */
+export const getMessages = (token) => {
+    return fetch(`${URL}:${PORT}/get-messages`, {
+        method: 'POST',
+        body: JSON.stringify({'token': token})
+    })
+};
+
+/**
  * Запрос всех каналов
  * @param token
  * @returns {Promise<Response>}

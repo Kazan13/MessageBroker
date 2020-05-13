@@ -14,7 +14,7 @@ const Channel = (props) => {
         <div className={styles.channel}
              onClick={() => props.onCurrentChannel(props.channel.id)}>
             <div className={styles.img}>
-                <img src="https://i.ibb.co/YywFDHg/2020-05-04-22-39-01.jpg" alt="2020-05-04-22-39-01" border="0"/>
+                <img src="https://i.ibb.co/YywFDHg/2020-05-04-22-39-01.jpg" alt="photo" border="0"/>
             </div>
             <div className={styles.channelName}>
                 {props.channel.channelName}

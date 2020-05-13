@@ -42,7 +42,8 @@ public class AppConfig {
         hikariConfig.setJdbcUrl(url);
         hikariConfig.setUsername(username);
         hikariConfig.setPassword(password);
-        hikariConfig.setMaximumPoolSize(5);
+        hikariConfig.setMaximumPoolSize(32);
+        hikariConfig.setConnectionTimeout(28500);
         hikariConfig.setConnectionTestQuery("SELECT 1");
         hikariConfig.setPoolName("springHikariCP");
 

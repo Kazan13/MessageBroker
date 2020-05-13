@@ -1,6 +1,6 @@
 package com.ainur.broker.storages;
 
-import com.ainur.broker.models.messages.Message;
+import com.ainur.broker.models.socketMessages.Message;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

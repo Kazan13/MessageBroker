@@ -1,15 +1,13 @@
 package com.ainur.broker.storages;
 
-
 import org.java_websocket.WebSocket;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class WebSocketsStorage {
-    private ConcurrentHashMap<Integer, WebSocket> sockets;
+    private Map<Integer, WebSocket> sockets;
     private static WebSocketsStorage webSocketsStorage;
-
 
     private WebSocketsStorage() {
         sockets = new ConcurrentHashMap<>();
@@ -23,16 +21,12 @@ public class WebSocketsStorage {
     }
 
 
-    public boolean addSocket(int id, WebSocket socket) {
-        if (sockets.containsKey(id))
-            return false;
+    public void addSocket(int id, WebSocket socket) {
         sockets.put(id, socket);
-        return true;
     }
 
     public WebSocket getSocket(int id) {
         return sockets.get(id);
-
     }
 
     public void removeSocket(int id) {

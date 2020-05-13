@@ -1,7 +1,7 @@
 package com.ainur.broker.network;
 
-import com.ainur.broker.models.messages.AddChannel;
-import com.ainur.broker.models.messages.Subscribe;
+import com.ainur.broker.models.httpRequests.AddChannel;
+import com.ainur.broker.models.httpRequests.Subscribe;
 import com.ainur.broker.models.User;
 import com.ainur.broker.models.Token;
 import com.ainur.broker.repository.MySQLRepository;
@@ -248,4 +248,23 @@ public class AppRESTController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @RequestMapping("/get-messages")
+    @PostMapping(produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity getMessages(HttpServletRequest request) {
+        gson = new Gson();
+        log = Logger.getLogger(AppRESTController.class.getName());
+        try {
+            Token token = gson.fromJson(request.getReader(), Token.class);
+            log.info("AppRESTController.getMessages()");
+            return new ResponseEntity(this.mySQLRepository.getMessages(token), HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

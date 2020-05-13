@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import styles from "./dialog.module.css"
 import {connect} from "react-redux";
 import {sendMessageAction} from "../../../redux/actions/ws-actions";
+import Messages from "./messages/messages";
 
 const Dialog = (props) => {
 
@@ -10,23 +11,28 @@ const Dialog = (props) => {
 
     const createNewMessage = () => {
 
-        console.log( props.token + ' ' +  props.channelId + '' + messageInput.value + ' ' + new Date())
+        console.log( props.token + ' ' +  props.channelId + ' ' + messageInput.value + ' ' + new Date());
 
-        const newMessage = {
+        const data = {
             token: props.token,
             channelId: props.channelId,
             message: messageInput.value,
             date: Date.now()
         };
 
-        props.sendMessage(newMessage);
+        const message = {
+            type: 'PUBLISH',
+            data: JSON.stringify(data)
+        }
+
+        props.sendMessage(message);
         messageInput.value = '';
     }
 
     return (
         <div className={styles.dialog}>
             <div className={styles.messages}>
-
+                <Messages />
             </div>
 
             <div className={styles.messageInputForm}>

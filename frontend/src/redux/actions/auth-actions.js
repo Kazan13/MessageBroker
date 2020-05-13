@@ -1,6 +1,9 @@
 import {isTokenValid, logOut, signIn, signUp} from "../../services/http-service";
 import {Types} from "../action-types/action-types";
 import {getUserChannelsAction} from "./channels-actions";
+import {setSocket} from "../../services/web-socket-controller";
+import {getMessagesAction} from "./messages-actions";
+
 
 /**
  *
@@ -18,8 +21,11 @@ export const signInAction = (user) => dispatch => {
         document.cookie = `token=${json.token}`
         dispatch({type: Types.SET_TOKEN, payload: json.token});
         dispatch(getUserChannelsAction(json.token));
+        dispatch(getMessagesAction(json.token));
         dispatch({type: Types.HIDE_SIGN_IN_WINDOW});
         dispatch({type: Types.SHOW_MESSENGER});
+        setSocket();
+
     }).catch(err => {
         alert("Не удалось войти");
         console.log(err);
@@ -58,6 +64,8 @@ export const isTokenValidAction = (token) => dispatch => {
             dispatch({type: Types.SHOW_MESSENGER});
             dispatch({type: Types.HIDE_SPLASH_SCREEN});
             dispatch(getUserChannelsAction(token.token));
+            dispatch(getMessagesAction(token.token));
+            setSocket();
         } else {
             dispatch({type: Types.SHOW_SIGN_IN_WINDOW});
             dispatch({type: Types.HIDE_SPLASH_SCREEN});
