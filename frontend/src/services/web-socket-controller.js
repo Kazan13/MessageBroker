@@ -26,19 +26,18 @@ class WebSocketController  {
         this.socket.onmessage = event => {
             let message = JSON.parse(event.data);
             if(message.type === 'NEW_MESSAGE') {
-                console.log(event.data);
-                store.dispatch({type: Types.NEW_MESSAGE, payload: message.data});
+                store.dispatch({type: Types.NEW_MESSAGE, payload: JSON.parse(message.data)});
             } else {
                 console.log(event.data);
             }
         };
 
         this.socket.onclose = event => {
-            console.log('Соединение закрыто');
+            console.log('Соединение закрыто: ' + event);
         };
 
         this.socket.onerror = event => {
-            console.log(event);
+            console.log(event );
         };
 
         return this.socket;

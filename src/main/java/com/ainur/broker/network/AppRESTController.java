@@ -1,10 +1,12 @@
 package com.ainur.broker.network;
 
+import com.ainur.broker.models.TokenId;
 import com.ainur.broker.models.httpRequests.AddChannel;
 import com.ainur.broker.models.httpRequests.Subscribe;
 import com.ainur.broker.models.User;
 import com.ainur.broker.models.Token;
 import com.ainur.broker.repository.MySQLRepository;
+import com.ainur.broker.storages.TokensStorage;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -52,15 +54,20 @@ public class AppRESTController {
             User user = gson.fromJson(request.getReader(), User.class);
             log.info("AppRESTController.signIn() :" + user.getUsername());
             Token token = this.mySQLRepository.signIn(user);
+            TokenId tokenId = new TokenId();
+            tokenId.setUserId(TokensStorage.
+                    getTokenStorage().
+                    getUserId(token.
+                            getToken()));
+            tokenId.setToken(token);
 
             Cookie cookie = new Cookie("token", token.getToken());
             cookie.setMaxAge(10 * 60);
             cookie.setSecure(true);
             cookie.setPath("/");
-
             response.addCookie(cookie);
             return token.getToken() != null ?
-                    new ResponseEntity(token, HttpStatus.OK) :
+                    new ResponseEntity(tokenId, HttpStatus.OK) :
                     new ResponseEntity(HttpStatus.UNAUTHORIZED);
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,7 +196,10 @@ public class AppRESTController {
             Token token = gson.fromJson(request.getReader(), Token.class);
             log.info("AppRESTController.isTokenValid()");
             if (this.mySQLRepository.isTokenValid(token)) {
-                return new ResponseEntity(HttpStatus.OK);
+                TokenId tokenId = new TokenId();
+                tokenId.setUserId(TokensStorage.getTokenStorage().getUserId(token.getToken()));
+                tokenId.setToken(token);
+                return new ResponseEntity(tokenId, HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.UNAUTHORIZED);
             }

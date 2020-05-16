@@ -6,7 +6,8 @@ const initialState = {
     createChannelWindow: {isVisible: false},
     searchChannelWindow: {isVisible: false},
     messenger: {isVisible: false},
-    splashScreen: {isVisible: true}
+    splashScreen: {isVisible: true},
+    backgroundLayer: {isVisible: false}
 }
 
 export const modalWindowReducer = (state = initialState, action) => {
@@ -39,6 +40,22 @@ export const modalWindowReducer = (state = initialState, action) => {
             return {
                 ...state,
                 signUpWindow: {
+                    isVisible: false
+                }
+            }
+        }
+        case Types.SHOW_BG_LAYER: {
+            return {
+                ...state,
+                backgroundLayer: {
+                    isVisible: true
+                }
+            }
+        }
+        case Types.HIDE_BG_LAYER: {
+            return {
+                ...state,
+                backgroundLayer: {
                     isVisible: false
                 }
             }

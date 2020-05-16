@@ -1,3 +1,6 @@
-.message{
-
+.messages{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    height: 60vh;
 }

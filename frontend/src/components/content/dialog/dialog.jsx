@@ -10,8 +10,8 @@ const Dialog = (props) => {
     let [messageInput, changeMessage] = useState(undefined);
 
     const createNewMessage = () => {
-
-        console.log( props.token + ' ' +  props.channelId + ' ' + messageInput.value + ' ' + new Date());
+        if (messageInput.value === '')
+            return;
 
         const data = {
             token: props.token,

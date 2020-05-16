@@ -9,7 +9,7 @@ export const getMessagesAction = (token) => dispatch => {
             throw new Error('error');
         }
     }).then(json => {
-        dispatch({type: Types.SET_MESSAGES, payload: json});
+            dispatch({type: Types.SET_MESSAGES, payload: json});
         }
     ).catch(err => {
         alert("Не удается получить сообщения");

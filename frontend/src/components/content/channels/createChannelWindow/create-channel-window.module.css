@@ -1,18 +1,12 @@
-.layer {
-    z-index: 1;
-    /*position: absolute;*/
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.14);
-}
 
 .window {
-    z-index: 2;
+    position: absolute;
+    flex-direction: column;
+    margin: 30vh 0 0 30vw;
+    z-index: 4;
     width: 40vw;
     height: 30vh;
-    box-shadow: 5px 5px 12px 0px #64937D;
+    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
     background-color: rgb(255, 255, 255);
 
 
@@ -21,7 +15,6 @@
 .titleContainer{
     display: flex;
     flex-direction: row;
-    background-color: rgb(255, 255, 255);
 }
 .title {
     font-size: 2vh;
@@ -39,16 +32,15 @@
     width: 1vw;
     cursor: pointer;
     background-color: crimson;
-    border: 0.1vw solid #5b5b5b;
 }
 
 .closeButton:hover {
     background-color: crimson;
-    border: 0.1vw solid #5b5b5b;
+    /*border: 0.1vw solid #5b5b5b;*/
     box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
 }
 
-.form{
+.inputContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,7 +48,7 @@
 
 }
 
-.input {
+.channelInput {
     font-size: 2vh;
     height: 2.5vh;
     width: 20vw;
@@ -70,12 +62,10 @@
     margin: 6vh 0 0 0;
     height: 3vh;
     width: 6vw;
-    border: 0.1em solid #5b5b5b;
     cursor: pointer;
 }
 
 .createButton:hover {
     box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
-    border: 0.1em solid #5b5b5b;
 }
 

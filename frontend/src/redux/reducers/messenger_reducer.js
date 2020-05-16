@@ -16,19 +16,23 @@ export const messengerReducer = (state = initialState, action) => {
             }
         }
         case Types.NEW_MESSAGE: {
-            if (state.messages.get(action.payload.channelId) === undefined) {
-                state.messages.set(action.payload.channelId, []);
+            if (state.messages.get(action.payload.channelId + '') === undefined) {
+                debugger
+                state.messages.set(action.payload.channelId + '', []);
+                debugger
                 return {
                     ...state
                 }
             } else {
+                debugger
                 state.messages.set(
-                    action.payload.channelId,
+                    action.payload.channelId + '',
                     [
-                        ...state.messages.get(action.payload.channelId),
+                        ...state.messages.get(action.payload.channelId + ''),
                         action.payload
                     ]
                 );
+                debugger
                 return {
                     ...state
                 }

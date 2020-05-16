@@ -43,13 +43,15 @@ export default connect(
     ),
     dispatch => ({
         onCreateChannelWindow: () => {
-            dispatch({type: Types.SHOW_CREATE_CHANNEL_WINDOW})
+            dispatch({type: Types.SHOW_CREATE_CHANNEL_WINDOW});
+            dispatch({type: Types.SHOW_BG_LAYER});
         },
         onLogOut: (token) => {
             dispatch(logOutAction(token))
         },
         onSearchChannelWindow: (token) => {
-            dispatch(getAllChannelsAction(token))
+            dispatch(getAllChannelsAction(token));
+            dispatch({type: Types.SHOW_BG_LAYER});
         }
     })
 )(Header);

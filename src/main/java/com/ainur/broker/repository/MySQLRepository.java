@@ -63,6 +63,8 @@ public class MySQLRepository {
             "select * from channels";
     private static final String GET_USER =
             " select * from users where username = ?";
+    private static final String GET_USER_NAME_BY_ID =
+            "select * from users where id = ?";
     private static final String INSERT_CHANNEL =
             "insert into channels (channel, admin_id) values (?, ?);";
     private static final String INSERT_SUBSCRIPTION =
@@ -108,6 +110,7 @@ public class MySQLRepository {
                 Messages messages = new Messages();
                 while(resultSet.next()) {
                     DistributedMessage message = new DistributedMessage();
+                    message.setSenderName(getUserName(resultSet.getInt(4)));
                     message.setDate(resultSet.getTimestamp(2).getTime());
                     message.setMessage(resultSet.getString(3));
                     message.setSenderId(resultSet.getInt(4));
@@ -274,14 +277,15 @@ public class MySQLRepository {
         }
     }
 
-    public String getUserName(String sql) {
+    public String getUserName(int id) {
         Logger log = Logger.getLogger(MySQLRepository.class.getName());
         log.info("MySQLRepository.getUserName()");
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_NAME_BY_ID);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                return resultSet.getString(1);
+                return resultSet.getString(2);
             else
                 return null;
         } catch (SQLException e) {

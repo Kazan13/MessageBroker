@@ -37,7 +37,7 @@ public class Worker extends Thread {
         Gson gson = new Gson();
 
         for (int subscriber : subscribers) {
-            if (WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber) != null) {
+            if (WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber) != null && WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).isOpen()) {
                 WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).send(gson.toJson(createPocket(message)));
             }
         }
@@ -55,12 +55,14 @@ public class Worker extends Thread {
 
     private DistributedMessage createDistributedMessage(Message message) {
         int userId = TokensStorage.getTokenStorage().getUserId(message.getToken());
+        String senderName = mySQLRepository.getUserName(userId);
 
         DistributedMessage distributedMessage = new DistributedMessage();
         distributedMessage.setChannelId(message.getChannelId());
         distributedMessage.setDate(message.getDate().getTime());
         distributedMessage.setMessage(message.getMessage());
         distributedMessage.setSenderId(userId);
+        distributedMessage.setSenderName(senderName);
 
         return distributedMessage;
     }
