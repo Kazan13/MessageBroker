@@ -9,7 +9,12 @@ export const getMessagesAction = (token) => dispatch => {
             throw new Error('error');
         }
     }).then(json => {
-            dispatch({type: Types.SET_MESSAGES, payload: json});
+            let messages = new Map();
+            for (let [key, values] of Object.entries(json)) {
+                messages.set(parseInt(key), values);
+            }
+            console.log(messages);
+            dispatch({type: Types.SET_MESSAGES, payload: messages});
         }
     ).catch(err => {
         alert("Не удается получить сообщения");

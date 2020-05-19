@@ -38,12 +38,12 @@ public class Worker extends Thread {
 
         for (int subscriber : subscribers) {
             if (WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber) != null && WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).isOpen()) {
-                WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).send(gson.toJson(createPocket(receivedMessage)));
+                WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).send(gson.toJson(createMessage(receivedMessage)));
             }
         }
     }
 
-    private Message createPocket(ReceivedMessage receivedMessage) {
+    private Message createMessage(ReceivedMessage receivedMessage) {
         Gson gson = new Gson();
 
         Message message = new Message();

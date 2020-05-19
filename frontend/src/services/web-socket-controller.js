@@ -24,9 +24,9 @@ class WebSocketController  {
         };
 
         this.socket.onmessage = event => {
-            let message = JSON.parse(event.data);
-            if(message.type === 'NEW_MESSAGE') {
-                store.dispatch({type: Types.NEW_MESSAGE, payload: JSON.parse(message.data)});
+            let json = JSON.parse(event.data);
+            if(json.type === 'NEW_MESSAGE') {
+                store.dispatch({type: Types.NEW_MESSAGE, payload: JSON.parse(json.data)});
             } else {
                 console.log(event.data);
             }

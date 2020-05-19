@@ -14,7 +14,7 @@ const Dialog = (props) => {
         const data = {
             token: props.token,
             channelId: props.channelId,
-            receivedMessage: messageInput.value,
+            message: messageInput.value,
             date: Date.now()
         };
 

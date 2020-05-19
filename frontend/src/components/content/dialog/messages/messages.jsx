@@ -21,8 +21,8 @@ const Messages = (props) => {
 
 export default connect(
     state => ({
-        messages: state.messenger.messages.get(state.messenger.currentChannel + "") ?
-            state.messenger.messages.get(state.messenger.currentChannel + "") :
+        messages: state.messenger.messages.get(state.messenger.currentChannel) ?
+            state.messenger.messages.get(state.messenger.currentChannel) :
             [],
         currentChannel: state.messenger.currentChannel,
         id: state.auth.id
