@@ -5,8 +5,6 @@ import {sendMessageAction} from "../../../redux/actions/ws-actions";
 import Messages from "./messages/messages";
 
 const Dialog = (props) => {
-
-
     let [messageInput, changeMessage] = useState(undefined);
 
     const createNewMessage = () => {
@@ -16,16 +14,17 @@ const Dialog = (props) => {
         const data = {
             token: props.token,
             channelId: props.channelId,
-            message: messageInput.value,
+            receivedMessage: messageInput.value,
             date: Date.now()
         };
 
-        const message = {
-            type: 'PUBLISH',
+        let PUBLISH = 'PUBLISH';
+        const receivedMessage = {
+            type: PUBLISH,
             data: JSON.stringify(data)
         }
 
-        props.sendMessage(message);
+        props.sendMessage(receivedMessage);
         messageInput.value = '';
     }
 
@@ -39,7 +38,7 @@ const Dialog = (props) => {
                 <div>
                     <input className={styles.messageInput}
                         type="text"
-                        placeholder="message"
+                        placeholder="receivedMessage"
                         ref={(input => {
                             changeMessage(input);
                         })}/>
@@ -54,7 +53,7 @@ const Dialog = (props) => {
             </div>
         </div>
     )
-}
+};
 
 
 export default connect(
@@ -63,8 +62,8 @@ export default connect(
         channelId: state.messenger.currentChannel,
     }),
     dispatch => ({
-        sendMessage: (message) => {
-            dispatch(sendMessageAction(message))
+        sendMessage: (receivedMessage) => {
+            dispatch(sendMessageAction(receivedMessage))
         }
     })
 )(Dialog);

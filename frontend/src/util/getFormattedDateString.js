@@ -1,4 +1,4 @@
-export const getDate = (date) => {
+export const getFormattedDateString = (date) => {
     let sentDate = new Date(date);
     let seconds = sentDate.getSeconds() < 10 ? `0${sentDate.getSeconds()}` : `${sentDate.getSeconds()}`;
     let minutes = sentDate.getMinutes() < 10 ? `0${sentDate.getMinutes()}` : `${sentDate.getMinutes()}`;

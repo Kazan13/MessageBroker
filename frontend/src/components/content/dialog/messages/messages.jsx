@@ -7,10 +7,10 @@ import ThisUserMessage from "./this-user-message/this-user-message";
 const Messages = (props) => {
     return (
         <div className={styles.messages}>
-            {props.messages.map((message, index) => {
-                    if (message.senderId === props.id)
-                        return <ThisUserMessage key={index} message={message}/>;
-                    return <Message key={index} message={message}/>;
+            {props.messages.map((receivedMessage, index) => {
+                    if (receivedMessage.senderId === props.id)
+                        return <ThisUserMessage key={index} receivedMessage={receivedMessage}/>;
+                    return <Message key={index} receivedMessage={receivedMessage}/>;
 
                 }
             )}

@@ -1,8 +1,8 @@
 package com.ainur.broker;
 
-import com.ainur.broker.models.socketMessages.DistributedMessage;
+import com.ainur.broker.models.socketMessages.data.DistributedMessage;
+import com.ainur.broker.models.socketMessages.data.ReceivedMessage;
 import com.ainur.broker.models.socketMessages.Message;
-import com.ainur.broker.models.socketMessages.Pocket;
 import com.ainur.broker.repository.MySQLRepository;
 import com.ainur.broker.storages.MessagesStorage;
 import com.ainur.broker.storages.TokensStorage;
@@ -24,43 +24,43 @@ public class Worker extends Thread {
     public void run() {
         while (true) {
             try {
-                Message message = MessagesStorage.getMessagesStorage().takeMessage();
-                mySQLRepository.publish(message);
-                sendMessage(message, mySQLRepository.getSubscribers(message.getChannelId()));
+                ReceivedMessage receivedMessage = MessagesStorage.getMessagesStorage().takeMessage();
+                mySQLRepository.publish(receivedMessage);
+                sendMessage(receivedMessage, mySQLRepository.getSubscribers(receivedMessage.getChannelId()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void sendMessage(Message message, ArrayList<Integer> subscribers) {
+    private void sendMessage(ReceivedMessage receivedMessage, ArrayList<Integer> subscribers) {
         Gson gson = new Gson();
 
         for (int subscriber : subscribers) {
             if (WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber) != null && WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).isOpen()) {
-                WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).send(gson.toJson(createPocket(message)));
+                WebSocketsStorage.getWebSocketsStorage().getSocket(subscriber).send(gson.toJson(createPocket(receivedMessage)));
             }
         }
     }
 
-    private Pocket createPocket(Message message) {
+    private Message createPocket(ReceivedMessage receivedMessage) {
         Gson gson = new Gson();
 
-        Pocket pocket = new Pocket();
-        pocket.setType(MessageTypes.NEW_MESSAGE);
-        pocket.setData(gson.toJson(createDistributedMessage(message), DistributedMessage.class));
+        Message message = new Message();
+        message.setType(MessageTypes.NEW_MESSAGE);
+        message.setData(gson.toJson(createDistributedMessage(receivedMessage), DistributedMessage.class));
 
-        return pocket;
+        return message;
     }
 
-    private DistributedMessage createDistributedMessage(Message message) {
-        int userId = TokensStorage.getTokenStorage().getUserId(message.getToken());
+    private DistributedMessage createDistributedMessage(ReceivedMessage receivedMessage) {
+        int userId = TokensStorage.getTokenStorage().getUserId(receivedMessage.getToken());
         String senderName = mySQLRepository.getUserName(userId);
 
         DistributedMessage distributedMessage = new DistributedMessage();
-        distributedMessage.setChannelId(message.getChannelId());
-        distributedMessage.setDate(message.getDate().getTime());
-        distributedMessage.setMessage(message.getMessage());
+        distributedMessage.setChannelId(receivedMessage.getChannelId());
+        distributedMessage.setDate(receivedMessage.getDate().getTime());
+        distributedMessage.setMessage(receivedMessage.getMessage());
         distributedMessage.setSenderId(userId);
         distributedMessage.setSenderName(senderName);
 

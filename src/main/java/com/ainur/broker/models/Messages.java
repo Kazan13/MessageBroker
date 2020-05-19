@@ -1,6 +1,6 @@
 package com.ainur.broker.models;
 
-import com.ainur.broker.models.socketMessages.DistributedMessage;
+import com.ainur.broker.models.socketMessages.data.DistributedMessage;
 
 import java.util.ArrayList;
 

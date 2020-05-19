@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./background-layer.module.css"
-import {isTokenValidAction} from "../../../redux/actions/auth-actions";
 import {connect} from "react-redux";
-import {getCookie} from "../../../redux/getCookie";
 
 /**
  * BackgroundLayer для затемнения фона

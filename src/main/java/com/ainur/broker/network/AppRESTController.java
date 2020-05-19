@@ -32,7 +32,7 @@ public class AppRESTController {
     @Autowired
     private MySQLRepository mySQLRepository;
     private Gson gson;
-    private Logger log;
+    private static final Logger log = Logger.getLogger(AppRESTController.class.getName());
 
 
     /**
@@ -49,7 +49,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity signIn(HttpServletRequest request, HttpServletResponse response) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             User user = gson.fromJson(request.getReader(), User.class);
             log.info("AppRESTController.signIn() :" + user.getUsername());
@@ -87,7 +86,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity signUp(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             User user = gson.fromJson(request.getReader(), User.class);
             log.info("AppRESTController.signUp() :" + user.getUsername());
@@ -112,7 +110,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity getUserChannels(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
             log.info("AppRESTController.getUserChannels()");
@@ -134,7 +131,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity addChannel(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             AddChannel addChannel = gson.fromJson(request.getReader(), AddChannel.class);
             log.info("AppRESTController.addChannel()");
@@ -162,7 +158,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity subscribe(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Subscribe subscribe = gson.fromJson(request.getReader(), Subscribe.class);
             log.info("AppRESTController.subscribe()");
@@ -191,7 +186,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity isTokenValid(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
             log.info("AppRESTController.isTokenValid()");
@@ -221,7 +215,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity logOut(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
             log.info("AppRESTController.logOut()");
@@ -248,7 +241,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity getAllChannels(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
             log.info("AppRESTController.getAllChannels()");
@@ -265,7 +257,6 @@ public class AppRESTController {
     @ResponseBody
     public ResponseEntity getMessages(HttpServletRequest request) {
         gson = new Gson();
-        log = Logger.getLogger(AppRESTController.class.getName());
         try {
             Token token = gson.fromJson(request.getReader(), Token.class);
             log.info("AppRESTController.getMessages()");

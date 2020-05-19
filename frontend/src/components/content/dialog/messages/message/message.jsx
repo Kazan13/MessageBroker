@@ -1,17 +1,17 @@
 import React from "react";
 import styles from "./message.module.css"
-import {getDate} from "../getDate";
+import {getFormattedDateString} from "../../../../../util/getFormattedDateString";
 
 const Message = (props) => {
     return (
         <div className={styles.message}>
             <div className={styles.messageInf}>
                 <div className={styles.senderName}>
-                    {props.message.senderName}
+                    {props.receivedMessage.senderName}
                 </div>
 
                 <div className={styles.sentTime}>
-                    {getDate(props.message.date)}
+                    {getFormattedDateString(props.receivedMessage.date)}
                 </div>
 
             </div>
@@ -23,7 +23,7 @@ const Message = (props) => {
                 </div>
 
                 <div className={styles.messageText}>
-                    {props.message.message}
+                    {props.receivedMessage.message}
                 </div>
             </div>
 

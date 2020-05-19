@@ -1,8 +1,8 @@
 package com.ainur.broker.network;
 
 import com.ainur.broker.models.Token;
+import com.ainur.broker.models.socketMessages.data.ReceivedMessage;
 import com.ainur.broker.models.socketMessages.Message;
-import com.ainur.broker.models.socketMessages.Pocket;
 import com.ainur.broker.storages.MessagesStorage;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;
@@ -18,13 +18,12 @@ import java.util.logging.Logger;
 
 
 public class WSServer {
-    private Logger log;
+    private final static Logger log = Logger.getLogger(WSServer.class.getName());;
     private Gson gson;
     private final String HOST = "localhost";
     private final int PORT = 8090;
     public WSServer() {
         TokensStorage.getTokenStorage();
-        this.log  = Logger.getLogger(WSServer.class.getName());
         gson = new Gson();
     }
 
@@ -43,10 +42,10 @@ public class WSServer {
                 }
 
                 @Override
-                public void onMessage(WebSocket conn, String message) {
-                    Pocket pocket = gson.fromJson(message, Pocket.class);
+                public void onMessage(WebSocket conn, String json) {
+                    Message message = gson.fromJson(json, Message.class);
                     log.info("received message from "	+ conn.getRemoteSocketAddress());
-                    sortMessage(pocket, conn);
+                    sortMessage(message, conn);
                 }
                 @Override
                 public void onError(WebSocket conn, Exception ex) {
@@ -59,27 +58,27 @@ public class WSServer {
         }
     }
 
-    private void sortMessage (Pocket pocket, WebSocket conn) {
+    private void sortMessage (Message message, WebSocket conn) {
         Gson gson = new Gson();
-        switch (pocket.getType()) {
+        switch (message.getType()) {
             case MessageTypes.AUTH: {
-                Token token = gson.fromJson(pocket.getData(), Token.class);
+                Token token = gson.fromJson(message.getData(), Token.class);
                 WebSocketsStorage.getWebSocketsStorage().addSocket(
                         TokensStorage.getTokenStorage().getUserId(token.getToken()) , conn);
                 break;
             }
             case MessageTypes.PUBLISH: {
-                Message message = gson.fromJson(pocket.getData(), Message.class);
-                addMessage(message, conn);
+                ReceivedMessage receivedMessage = gson.fromJson(message.getData(), ReceivedMessage.class);
+                addMessage(receivedMessage, conn);
                 break;
             }
         }
     }
 
-    private void addMessage(Message message, WebSocket socket) {
+    private void addMessage(ReceivedMessage receivedMessage, WebSocket socket) {
         log.info("WSServer().addMessage()");
-        if (message.getToken() != null && TokensStorage.getTokenStorage().isTokenValid(message.getToken())) {
-            MessagesStorage.getMessagesStorage().addMessage(message);
+        if (receivedMessage.getToken() != null && TokensStorage.getTokenStorage().isTokenValid(receivedMessage.getToken())) {
+            MessagesStorage.getMessagesStorage().addMessage(receivedMessage);
             socket.send(gson.toJson(HttpStatus.OK));
         } else {
             socket.send(gson.toJson(HttpStatus.CONFLICT));
