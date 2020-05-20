@@ -22,7 +22,6 @@ export const messengerReducer = (state = initialState, action) => {
                     ...state
                 }
             } else {
-                console.log(action.payload.channelId)
                 state.messages.set(
                     action.payload.channelId,
                     [
