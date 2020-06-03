@@ -1,5 +1,5 @@
-const URL = 'http://localhost';
-const PORT = '8080';
+const URL = 'http://ec2-3-87-201-249.compute-1.amazonaws.com';
+const PORT = '8081';
 
 /**
  * Запрос на подверждение правильности токена

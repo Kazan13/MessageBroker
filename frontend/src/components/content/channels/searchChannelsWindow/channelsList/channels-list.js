@@ -45,7 +45,6 @@ export default connect(
     dispatch => ({
         onSubscribe: (subscribeMessage) => {
             dispatch(subscribeAction(subscribeMessage));
-            dispatch({type: Types.HIDE_BG_LAYER})
         }
     })
 )(ChannelsList);

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class WSServer {
     private final static Logger log = Logger.getLogger(WSServer.class.getName());;
     private Gson gson;
-    private final String HOST = "localhost";
+    private final String HOST = "172.31.91.37";
     private final int PORT = 8090;
     public WSServer() {
         TokensStorage.getTokenStorage();

@@ -86,8 +86,10 @@ public class MySQLRepository {
 
 
     @PostConstruct
-    public void init() {
-        try (Connection connection = dataSource.getConnection()) {
+    public void init()  {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
             statement.executeUpdate(CREATE_USERS_TABLE);
             statement.executeUpdate(CREATE_CHANNELS_TABLE);
@@ -96,6 +98,15 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public boolean isTokenValid(Token token) {
@@ -103,7 +114,9 @@ public class MySQLRepository {
     }
 
     public HashMap<Integer, ArrayList<DistributedMessage>> getMessages(Token token) {
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             Channels channels = getUserChannels(token);
             HashMap <Integer, ArrayList<DistributedMessage>> messagesMap = new HashMap<>();
 
@@ -128,6 +141,15 @@ public class MySQLRepository {
             e.printStackTrace();
             return null;
         }
+        finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public Token signIn(User user) {
@@ -143,8 +165,10 @@ public class MySQLRepository {
     }
 
     public boolean signUp(User user) {
-         
-        try (Connection connection = dataSource.getConnection()) {
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             if (!isUserExists(user)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
                 preparedStatement.setString(1, user.getUsername());
@@ -157,6 +181,14 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -178,7 +210,9 @@ public class MySQLRepository {
         int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
         log.info("MySQLRepository.getUserChannels(): userId:" + userId);
         Channels channels = new Channels();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_CHANNELS);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -195,6 +229,14 @@ public class MySQLRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return channels;
     }
@@ -203,7 +245,9 @@ public class MySQLRepository {
     public Channels getAllChannels(Token token) {
         Channels channels = new Channels();
         log.info("MySQLRepository.getAllChannels(): userId:" + TokensStorage.getTokenStorage().getUserId(token.getToken()));
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHANNELS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -214,6 +258,14 @@ public class MySQLRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return channels;
     }
@@ -221,7 +273,9 @@ public class MySQLRepository {
     public boolean isUserExists(User user) {
          
         log.info("MySQLRepository.isUserExists(): userName:" + user.getUsername());
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -229,13 +283,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean isChannelExists(String channelName) {
          
         log.info("MySQLRepository.isChannelExists()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
             preparedStatement.setString(1, channelName);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -243,13 +307,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean isLoginPasswordValid(User user) {
          
         log.info("MySQLRepository.isLoginPasswordValid()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -261,13 +335,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public int getUserId(User user) {
          
         log.info("MySQLRepository.getUserId()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -277,13 +361,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public String getUserName(int id) {
          
         log.info("MySQLRepository.getUserName()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_NAME_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -294,13 +388,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public String getChannelId(String sql) {
          
         log.info("MySQLRepository.getChannelId()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -310,13 +414,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public ArrayList<Integer> getSubscribers(int channelId) {
          
         log.info("MySQLRepository.getSubscribersId()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_SUBSCRIBERS);
             preparedStatement.setInt(1, channelId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -328,6 +442,14 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -338,7 +460,9 @@ public class MySQLRepository {
         Gson gson = new Gson();
         int userId = TokensStorage.getTokenStorage().getUserId(receivedMessage.getToken());
         WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
             preparedStatement.setInt(1, receivedMessage.getChannelId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -356,6 +480,14 @@ public class MySQLRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

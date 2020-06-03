@@ -41,14 +41,14 @@ const SignIn = (props) => {
                                 password: passwordInput
                             });
                         }}>
-                            Войти
+                            <p>Войти</p>
                         </div>
 
                         <div className={styles.signUpButton} onClick={() => {
                             props.onSignUpWindow();
                             props.onSignInWindow();
                         }}>
-                            Зарегистрироваться
+                            <p>Зарегистрироваться</p>
                         </div>
 
                     </div>

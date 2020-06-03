@@ -1,20 +1,31 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import styles from "./messages.module.css"
 import {connect} from "react-redux";
 import Message from "./message/message";
 import ThisUserMessage from "./this-user-message/this-user-message";
 
 const Messages = (props) => {
-    return (
-        <div className={styles.messages}>
-            {props.messages.map((receivedMessage, index) => {
-                    if (receivedMessage.senderId === props.id)
-                        return <ThisUserMessage key={index} receivedMessage={receivedMessage}/>;
-                    return <Message key={index} receivedMessage={receivedMessage}/>;
+    const divRef = useRef(null);
 
-                }
-            )}
-        </div>
+    useEffect(() => {
+        divRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    });
+
+    return (
+            <div className={styles.messages}>
+                {props.messages.map((receivedMessage, index) => {
+                        if (receivedMessage.senderId === props.id)
+                            return <ThisUserMessage key={index} receivedMessage={receivedMessage}/>;
+                        return <Message key={index} receivedMessage={receivedMessage}/>;
+
+                    }
+                )}
+
+                <div  ref={divRef} />
+            </div>
+
+
+
     )
 };
 

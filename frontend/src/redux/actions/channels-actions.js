@@ -59,6 +59,7 @@ export const addChannelAction = (newChannelMessage) => dispatch => {
     addChannel(newChannelMessage).then(response => {
         if (response.ok) {
             dispatch({type: Types.HIDE_CREATE_CHANNEL_WINDOW});
+            dispatch({type: Types.HIDE_BG_LAYER});
             dispatch(getUserChannelsAction(newChannelMessage.token));
         } else {
             throw new Error('Error');
@@ -79,6 +80,7 @@ export const subscribeAction = (subscribeMessage) => dispatch => {
     subscribe(subscribeMessage).then(response => {
         if (response.ok) {
             dispatch({type: Types.HIDE_SEARCH_CHANNEL_WINDOW});
+            dispatch({type: Types.HIDE_BG_LAYER})
             dispatch(getUserChannelsAction(subscribeMessage.token));
         } else {
             throw new Error('Error');
