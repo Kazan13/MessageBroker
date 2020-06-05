@@ -1,14 +1,12 @@
 package com.ainur.broker.repository;
 
-import com.ainur.broker.models.Channel;
-import com.ainur.broker.models.Channels;
-import com.ainur.broker.models.messages.Message;
+import com.ainur.broker.models.*;
+import com.ainur.broker.models.socketMessages.data.DistributedMessage;
+import com.ainur.broker.models.socketMessages.data.ReceivedMessage;
 import com.ainur.broker.storages.TokensStorage;
 import com.ainur.broker.storages.WebSocketsStorage;
-import com.ainur.broker.models.messages.AddChannel;
-import com.ainur.broker.models.messages.Subscribe;
-import com.ainur.broker.models.User;
-import com.ainur.broker.models.Token;
+import com.ainur.broker.models.httpRequests.AddChannel;
+import com.ainur.broker.models.httpRequests.Subscribe;
 import com.google.gson.Gson;
 import org.java_websocket.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -28,6 +27,7 @@ public class MySQLRepository {
 
     @Autowired
     private DataSource dataSource;
+    private static final Logger log = Logger.getLogger(MySQLRepository.class.getName());
 
     private static final String CREATE_USERS_TABLE =
             "CREATE TABLE if not exists users " +
@@ -37,7 +37,9 @@ public class MySQLRepository {
     private static final String CREATE_CHANNELS_TABLE =
             "CREATE TABLE if not exists channels " +
                     "(id int AUTO_INCREMENT not null PRIMARY KEY," +
-                    "channel varchar (30) not null);";
+                    "channel varchar (30) not null," +
+                    "admin_id int not null," +
+                    "FOREIGN KEY (admin_id) REFERENCES users(id) );";
     private static final String CREATE_SUBSCRIPTIONS_TABLE =
             "CREATE TABLE if not exists subscriptions " +
                     "(subscriber_id int not null," +
@@ -53,29 +55,41 @@ public class MySQLRepository {
                     "channel_id int not null," +
                     "FOREIGN KEY (sender_id) REFERENCES users(id), " +
                     "FOREIGN KEY (channel_id) REFERENCES channels(id) );";
-    private static final String INSERT_USER = "insert into users " +
-            "(username, password) values (?,?);";
+
+    private static final String INSERT_USER =
+            "insert into users (username, password) values (?,?);";
+    private static final String INSERT_CHANNEL =
+            "insert into channels (channel, admin_id) values (?, ?);";
+    private static final String INSERT_SUBSCRIPTION =
+            "insert into subscriptions (subscriber_id, channel_id) values (?, ?)";
+    private static final String INSERT_MESSAGE =
+            "insert into messages (sender_id, channel_id, sent_time, message) values (?, ?, ?, ?)";
+
     private static final String GET_USER_CHANNELS =
             "select * from subscriptions where subscriber_id = ?";
     private static final String GET_ALL_CHANNELS =
             "select * from channels";
     private static final String GET_USER =
-            " select * from users where username = ?";
-    private static final String INSERT_CHANNEL =
-            "insert into channels (channel) values (?);";
-    private static final String INSERT_SUBSCRIPTION =
-            "insert into subscriptions (subscriber_id, channel_id) values (?, ?)";
+            "select * from users where username = ?";
+    private static final String GET_USER_NAME_BY_ID =
+            "select * from users where id = ?";
     private static final String GET_CHANNEL_NAME =
             "select * from channels where channel = ? ";
     private static final String GET_CHANNEL_BY_ID =
             "select * from channels where id = ? ";
-    private static final String INSERT_MESSAGE =
-            "insert into messages (sender_id, channel_id, sent_time, message) values (?, ?, ?, ?)";
+    private static final String GET_SUBSCRIBER =
+            "select * from subscriptions where channel_id = ? and subscriber_id = ?";
+    private static final String GET_SUBSCRIBERS =
+            "select * from subscriptions where channel_id = ?";
+    private static final String GET_MESSAGES =
+            "select * from messages where channel_id = ?";
 
 
     @PostConstruct
-    public void init() {
-        try (Connection connection = dataSource.getConnection()) {
+    public void init()  {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
             statement.executeUpdate(CREATE_USERS_TABLE);
             statement.executeUpdate(CREATE_CHANNELS_TABLE);
@@ -84,14 +98,62 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public boolean isTokenValid(Token token) {
         return TokensStorage.getTokenStorage().isTokenValid(token.getToken());
     }
 
+    public HashMap<Integer, ArrayList<DistributedMessage>> getMessages(Token token) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            Channels channels = getUserChannels(token);
+            HashMap <Integer, ArrayList<DistributedMessage>> messagesMap = new HashMap<>();
+
+            for (Channel channel : channels.getChannels()) {
+                PreparedStatement statement = connection.prepareStatement(GET_MESSAGES);
+                statement.setInt(1, channel.getId());
+                ResultSet resultSet = statement.executeQuery();
+                Messages messages = new Messages();
+                while(resultSet.next()) {
+                    DistributedMessage message = new DistributedMessage();
+                    message.setSenderName(getUserName(resultSet.getInt(4)));
+                    message.setDate(resultSet.getTimestamp(2).getTime());
+                    message.setMessage(resultSet.getString(3));
+                    message.setSenderId(resultSet.getInt(4));
+                    message.setChannelId(resultSet.getInt(5));
+                    messages.addMessage(message);
+                }
+                messagesMap.put(channel.getId(), messages.getMessages());
+            }
+            return messagesMap;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public Token signIn(User user) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         UUID uuid = UUID.randomUUID();
         Token token = new Token();
         if (isLoginPasswordValid(user)) {
@@ -103,39 +165,54 @@ public class MySQLRepository {
     }
 
     public boolean signUp(User user) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
-        try (Connection connection = dataSource.getConnection()) {
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             if (!isUserExists(user)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER);
                 preparedStatement.setString(1, user.getUsername());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.executeUpdate();
-                log.info("MySQLRepository.signUp(): username: "+ user.getUsername());
+                log.info("MySQLRepository.signUp(): username: " + user.getUsername());
                 return true;
             } else
                 return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean logOut(Token token) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         log.info("MySQLRepository.logOut(): userId:"
                 + TokensStorage.getTokenStorage().getUserId(token.getToken()));
         if (isTokenValid(token)) {
+            int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
+
             TokensStorage.getTokenStorage().removeToken(token.getToken());
+            WebSocketsStorage.getWebSocketsStorage().removeSocket(userId);
         }
         return true;
     }
 
     public Channels getUserChannels(Token token) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         int userId = TokensStorage.getTokenStorage().getUserId(token.getToken());
         log.info("MySQLRepository.getUserChannels(): userId:" + userId);
         Channels channels = new Channels();
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_CHANNELS);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -152,16 +229,25 @@ public class MySQLRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return channels;
     }
 
 
     public Channels getAllChannels(Token token) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
         Channels channels = new Channels();
         log.info("MySQLRepository.getAllChannels(): userId:" + TokensStorage.getTokenStorage().getUserId(token.getToken()));
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHANNELS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -172,14 +258,24 @@ public class MySQLRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return channels;
     }
 
     public boolean isUserExists(User user) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         log.info("MySQLRepository.isUserExists(): userName:" + user.getUsername());
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -187,13 +283,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean isChannelExists(String channelName) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         log.info("MySQLRepository.isChannelExists()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
             preparedStatement.setString(1, channelName);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -201,13 +307,23 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean isLoginPasswordValid(User user) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         log.info("MySQLRepository.isLoginPasswordValid()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -219,45 +335,76 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public int getUserId(User user) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         log.info("MySQLRepository.getUserId()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER);
             preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
                 return resultSet.getInt(1);
-            return 0;
+            return -1;
         } catch (SQLException e) {
             e.printStackTrace();
-            return 0;
+            return -1;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public String getUserName(String sql) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+    public String getUserName(int id) {
+         
         log.info("MySQLRepository.getUserName()");
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_NAME_BY_ID);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                return resultSet.getString(1);
+                return resultSet.getString(2);
             else
                 return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public String getChannelId(String sql) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+         
         log.info("MySQLRepository.getChannelId()");
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -267,36 +414,57 @@ public class MySQLRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public ArrayList<Integer> getSubscribersId(String sql) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+    public ArrayList<Integer> getSubscribers(int channelId) {
+         
         log.info("MySQLRepository.getSubscribersId()");
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_SUBSCRIBERS);
+            preparedStatement.setInt(1, channelId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            ArrayList<Integer> subscribersId = new ArrayList<>();
+            ArrayList<Integer> subscribers = new ArrayList<>();
             while (resultSet.next()) {
-                subscribersId.add(resultSet.getInt(1));
+                subscribers.add(resultSet.getInt(1));
             }
-            return subscribersId;
+            return subscribers;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public void publish(Message message) {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
+    public void publish(ReceivedMessage receivedMessage) {
+         
         log.info("MySQLRepository.publish()");
-        java.sql.Timestamp date = new java.sql.Timestamp(message.getDate().getTime());
+        java.sql.Timestamp date = new java.sql.Timestamp(receivedMessage.getDate().getTime());
         Gson gson = new Gson();
-        int userId = TokensStorage.getTokenStorage().getUserId(message.getToken());
+        int userId = TokensStorage.getTokenStorage().getUserId(receivedMessage.getToken());
         WebSocket socket = WebSocketsStorage.getWebSocketsStorage().getSocket(userId);
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
-            preparedStatement.setString(1, message.getChannelId());
+            preparedStatement.setInt(1, receivedMessage.getChannelId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int channelId = Integer.parseInt(resultSet.getString(1));
@@ -304,7 +472,7 @@ public class MySQLRepository {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setInt(2, channelId);
                 preparedStatement.setTimestamp(3, date, java.util.Calendar.getInstance());
-                preparedStatement.setString(4, message.getMessage());
+                preparedStatement.setString(4, receivedMessage.getMessage());
                 preparedStatement.executeUpdate();
                 socket.send(gson.toJson(HttpStatus.OK));
             } else {
@@ -312,18 +480,26 @@ public class MySQLRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean subscribe(Subscribe subscribe) throws SQLException {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
         log.info("MySQLRepository.subscribe()");
         int userId = TokensStorage.getTokenStorage().getUserId(subscribe.getToken());
+
         Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
         preparedStatement.setString(1, subscribe.getChannelId());
         ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
+        if (resultSet.next() && !isUserSubscribedToChannel(userId, Integer.parseInt(subscribe.getChannelId()))) {
             int channelId = Integer.parseInt(resultSet.getString(1));
             preparedStatement = connection.prepareStatement(INSERT_SUBSCRIPTION);
             preparedStatement.setInt(1, userId);
@@ -335,8 +511,19 @@ public class MySQLRepository {
         }
     }
 
+    public boolean isUserSubscribedToChannel(int userId, int channelId) throws SQLException {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(GET_SUBSCRIBER);
+            statement.setInt(1, channelId);
+            statement.setInt(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                    return true;
+            }
+            return false;
+    }
+
     public boolean createChannel(AddChannel addChannel) throws SQLException {
-        Logger log = Logger.getLogger(MySQLRepository.class.getName());
         log.info("MySQLRepository.createChannel()");
         Gson gson = new Gson();
         int userId = TokensStorage.getTokenStorage().getUserId(addChannel.getToken());
@@ -344,6 +531,7 @@ public class MySQLRepository {
         if (!isChannelExists(addChannel.getChannelName())) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHANNEL);
             preparedStatement.setString(1, addChannel.getChannelName());
+            preparedStatement.setInt(2, userId);
             preparedStatement.executeUpdate();
             preparedStatement = connection.prepareStatement(GET_CHANNEL_NAME);
             preparedStatement.setString(1, addChannel.getChannelName());

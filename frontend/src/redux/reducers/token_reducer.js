@@ -3,7 +3,8 @@ import {Types} from "../action-types/action-types";
 
 const initialState = {
     token: {
-        token: getCookie('token')
+        token: getCookie('token'),
+        id: undefined
     }
 };
 
@@ -17,8 +18,14 @@ export const tokenReducer = (state = initialState, action) => {
                 }
             }
         }
+        case Types.SET_ID: {
+            return {
+                ...state,
+                id: action.payload
+            }
+        }
         default: {
             return state;
         }
     }
-}
+};

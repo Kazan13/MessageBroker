@@ -17,24 +17,22 @@ const CreateChannelWindow = (props) => {
 
     let windowVisibleStile = props.createChannelWindow ? {display: 'flex'} : {display: 'none'};
     return (
-        <div style={windowVisibleStile}
-             className={styles.layer}>
-            <div className={styles.window}>
+            <div className={styles.window} style={windowVisibleStile}>
                 <div className={styles.titleContainer}>
                     <div className={styles.title}>Create new channel</div>
                     <div className={styles.closeButton}
-                        onClick={props.onCreateChannelWindow}>
-                         X
+                         onClick={props.onCreateChannelWindow}>
+                        X
                     </div>
                 </div>
 
-                <div className={styles.form}>
-                    <input className={styles.input}
-                        type="text"
-                        placeholder="channel name"
-                        ref={(input => {
-                            changeCreateChannel(input)
-                        })}/>
+                <div className={styles.inputContainer}>
+                    <input className={styles.channelInput}
+                           type="text"
+                           placeholder="channel name"
+                           ref={(input => {
+                               changeCreateChannel(input)
+                           })}/>
                     <div className={styles.createButton} onClick={() => {
                         if (createInput.value !== '') {
                             props.onChannels(
@@ -48,7 +46,6 @@ const CreateChannelWindow = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
     );
 };
 
@@ -62,7 +59,8 @@ export default connect(
             dispatch(addChannelAction(newChannelMessage))
         },
         onCreateChannelWindow: () => {
-            dispatch({type: Types.HIDE_CREATE_CHANNEL_WINDOW})
+            dispatch({type: Types.HIDE_CREATE_CHANNEL_WINDOW});
+            dispatch({type: Types.HIDE_BG_LAYER})
         }
     })
 )(CreateChannelWindow);

@@ -7,11 +7,15 @@
     <groupId>ainur.com</groupId>
     <artifactId>MessageBroker</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>BrokerBackEnd</name>
 
     <properties>
         <java-version>1.7</java-version>
         <springframework.version>4.3.1.RELEASE</springframework.version>
-        <jackson.version>2.7.5</jackson.version>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
     <parent>
@@ -55,7 +59,7 @@
 
 
     <build>
-        <finalName>CalendarBackEnd</finalName>
+        <finalName>BrokerBakEnd</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

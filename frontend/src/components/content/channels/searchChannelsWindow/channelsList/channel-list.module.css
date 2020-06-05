@@ -1,0 +1,56 @@
+.channel {
+    display: flex;
+    flex-direction: row;
+    height: 8vh;
+    margin: 0.8vh 1vw 0 1vw;
+    border-radius: 5px;
+    box-shadow: 0.3vh 0.1vw 1vh 0 #64937D;
+    width: 20vw;
+
+}
+
+.channel:hover {
+    cursor: pointer;
+    background-color: rgba(230, 233, 237, 0.4);
+}
+
+.subscribe {
+    display: flex;
+    flex-direction: row;
+}
+
+.channelName {
+    display: flex;
+    align-items: center;
+    font: 1em "Century Gothic", Futura, sans-serif;
+    padding: 0 5px;
+}
+
+.img {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.img img {
+    width: 40px;
+    border-radius: 50%;
+    padding: 0 5px;
+}
+
+.subscribeButton {
+    text-align: center;
+    font-size: 2vh;
+    margin: 3vh 0 0 3vw;
+    height: 4vh;
+    width: 5vw;
+    border-radius: 1vh;
+    background: rgba(229, 222, 222, 0.48);
+    box-shadow: 0.5vh 0.2vw 2vh 0 rgba(91, 91, 91, 0.7);
+    cursor: pointer;
+}
+
+.subscribeButton:hover{
+    box-shadow: 0.5vh 0.2vw 1vh 0 rgba(91, 91, 91, 0.7);
+}
+

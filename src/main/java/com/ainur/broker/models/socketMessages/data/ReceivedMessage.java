@@ -1,28 +1,18 @@
-package com.ainur.broker.models.messages;
+package com.ainur.broker.models.socketMessages.data;
 
 import java.util.Date;
 
-public class Message {
-    private String senderId;
-    private String channelId;
+public class ReceivedMessage {
+    private int channelId;
     private String message;
     private long date;
     private String token;
 
-
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getChannelId() {
+    public int getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(String channelId) {
+    public void setChannelId(int channelId) {
         this.channelId = channelId;
     }
 
@@ -36,6 +26,10 @@ public class Message {
 
     public Date getDate() {
         return new Date(this.date);
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 
     public String getToken() {

@@ -1,0 +1,58 @@
+
+.message{
+    display: flex;
+    flex-direction: column;
+
+    margin: 1em 0 0 0;
+    padding: 0 0 1em 0;
+
+
+
+    background: rgba(229, 222, 222, 0.48);
+    border-radius: 0.3em;
+    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
+}
+
+.messageInf {
+    font-size: 0.5em;
+    display: flex;
+    flex-direction: row;
+}
+
+.senderName {
+    margin: 0 0 0 2em;
+    font: 1.5em "Century Gothic", Futura, sans-serif;
+    color: #000000;
+    opacity: 50%;
+    text-shadow: 2em 6em 5em rgba(255, 255, 255, 0.4);
+}
+
+.sentTime {
+    margin: 0 0 0 1em;
+    font: 1.5em "Century Gothic", Futura, sans-serif;
+    color: #000000;
+    opacity: 50%;
+    text-shadow: 2em 6em 5em rgba(255, 255, 255, 0.4);
+}
+
+.messageImg {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+
+.messageText {
+    margin: 0 0 0 2em;
+    color: #000000;
+    text-shadow: 2em 6em 5em rgba(255, 255, 255, 0.4);
+}
+
+
+
+.name {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}

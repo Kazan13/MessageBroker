@@ -1,14 +1,4 @@
-.App{
-    background-color: rgba(230, 233, 237, 0.4);
-}
-
-.line {
-    position: absolute;
-    left: 10.42%;
-    right: 10.21%;
-    top: 16%;
-    bottom: 93.85%;
-
-    background: #FFFFFF;
-    border: 1px solid rgba(230, 233, 237, 0.4);
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #09c6f9;
 }

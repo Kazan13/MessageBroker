@@ -1,4 +1,4 @@
-package com.ainur.broker.models.messages;
+package com.ainur.broker.models.httpRequests;
 
 
 public class AddChannel {

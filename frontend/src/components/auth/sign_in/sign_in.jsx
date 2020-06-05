@@ -14,7 +14,7 @@ const SignIn = (props) => {
         <div style={layerVisibleStyle} className={styles.signInPage}>
             <div className={styles.container}>
                 <div className={styles.title}>Вход в аккаунт</div>
-                <div className={styles.title2}>Пожалуйста, войдите в свой аккаунт</div>
+                <div className={styles.subTitle}>Пожалуйста, войдите в свой аккаунт</div>
                 <div className={styles.form}>
                     <div className={styles.input}>
                         <input className={styles.usernameInput}
@@ -41,14 +41,14 @@ const SignIn = (props) => {
                                 password: passwordInput
                             });
                         }}>
-                            Войти
+                            <p>Войти</p>
                         </div>
 
                         <div className={styles.signUpButton} onClick={() => {
                             props.onSignUpWindow();
                             props.onSignInWindow();
                         }}>
-                            Зарегистрироваться
+                            <p>Зарегистрироваться</p>
                         </div>
 
                     </div>

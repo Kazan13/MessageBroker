@@ -1,9 +1,12 @@
 .footer {
     display: flex;
-    justify-content: center;
-    height: 5vh;
-    width: 70vw;
-    margin: 0 auto;
-    font: 2vh "Century Gothic", Futura, sans-serif;
-    background-color: #ffffff;
+    flex-direction: column;
+    text-align: center;
+
+    height: 4em;
+    width: 70em;
+    background-color: #00a4e4;
+    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
 }
+
+

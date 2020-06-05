@@ -15,9 +15,7 @@ const SearchChannelsWindow = (props) => {
 
     let windowVisibleStile = props.searchChannelWindow ? {display: 'flex'} : {display: 'none'};
     return (
-        <div style={windowVisibleStile}
-             className={styles.layer}>
-            <div className={styles.window}>
+            <div className={styles.window} style={windowVisibleStile}>
                 <div className={styles.titleContainer}>
                     <div className={styles.title}>Search channels</div>
                     <div className={styles.closeButton}
@@ -29,15 +27,15 @@ const SearchChannelsWindow = (props) => {
                     </div>
                 </div>
 
-                <div className={styles.form}>
-                    <input type="text"
+                <div className={styles.inputContainer}>
+                    <input className={styles.searchInput}
+                        type="text"
                            placeholder="channel name"
                            ref={(input => {
                                changeSearchChannel(input)
                            })}/>
                     <div className={styles.searchButton}
                          onClick={() => {
-                             if (searchInput.value !== '')
                                  props.onFindChannel(searchInput.value);
                          }}>search
                     </div>
@@ -47,7 +45,6 @@ const SearchChannelsWindow = (props) => {
                     <ChannelsList/>
                 </div>
             </div>
-        </div>
     );
 }
 
@@ -60,7 +57,8 @@ export default connect(
     },
     dispatch => ({
         onSearchChannelWindow: () => {
-            dispatch({type: Types.HIDE_SEARCH_CHANNEL_WINDOW})
+            dispatch({type: Types.HIDE_SEARCH_CHANNEL_WINDOW});
+            dispatch({type: Types.HIDE_BG_LAYER});
         },
         onFindChannel: (channelName) => {
             dispatch({type: Types.FIND_CHANNEL, payload: channelName})

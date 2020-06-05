@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./splash-screen.module.css"
-import {isTokenValidAction} from "../../redux/actions/auth-actions";
+import {isTokenValidAction} from "../../../redux/actions/auth-actions";
 import {connect} from "react-redux";
-import {getCookie} from "../../redux/getCookie";
+import {getCookie} from "../../../redux/getCookie";
 
 /**
  * SplashScreen для проверки необходимости

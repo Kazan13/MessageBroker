@@ -3,9 +3,10 @@ import classes from './footer.module.css'
 
 const Footer = () => {
     return (
-        <header className={classes.footer}>
-            Footer
-        </header>
+        <footer className={classes.footer}>
+            <div>Developed by <a href="https://github.com/ceasar13m">ceasar13m</a></div>
+            <div>2019 - {(new Date()).getFullYear()}</div>
+        </footer>
     );
 }
 

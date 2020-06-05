@@ -13,7 +13,6 @@ const Content = (props) => {
         return (
             <div className={styles.content}>
                 <Channels/>
-                <div className={styles.line}></div>
                 <Dialog/>
             </div>
         )

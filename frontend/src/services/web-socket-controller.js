@@ -1,48 +1,65 @@
 import {store} from "./../redux/store";
 import {Types} from "./../redux/action-types/action-types";
-import {webSocket} from './web-socket';
+import {getCookie} from "../redux/getCookie";
+
+let URL = 'ws://ec2-3-87-201-249.compute-1.amazonaws.com';
+let PORT = '8090';
 
 class WebSocketController  {
 
-    constructor() {
+    constructor(socket) {
         this.sendMessage = this.sendMessage.bind(this);
         this.setupSocket = this.setupSocket.bind(this);
+        this.socket = socket;
     }
 
     setupSocket () {
-        let socket = webSocket.socket;
-
-        socket.onopen = event => {
+          this.socket.onopen = event => {
             console.log('Соединение установлено');
+            let authMessage = {
+                type: 'AUTH',
+                data: JSON.stringify({token: getCookie('token')})
+            }
+            getSocket().send(JSON.stringify(authMessage));
         };
 
-        socket.onmessage = event => {
-            console.log(event.data);
-            // let message = JSON.parse(event.data);
-            // store.dispatch({type: Types.NEW_MESSAGE, payload: message});
-        };
-
-        socket.onclose = event => {
-            if (event.wasClean) {
-                console.log('Соединение закрыто');
+        this.socket.onmessage = event => {
+            let json = JSON.parse(event.data);
+            if(json.type === 'NEW_MESSAGE') {
+                store.dispatch({type: Types.NEW_MESSAGE, payload: JSON.parse(json.data)});
             } else {
-                console.log('Соединение разорвано');
+                console.log(event.data);
             }
         };
 
-        socket.onerror = event => {
-            console.log(event);
+        this.socket.onclose = event => {
+            console.log('Соединение закрыто: ' + event);
         };
 
-        return socket;
+        this.socket.onerror = event => {
+            console.log(event );
+        };
+
+        return this.socket;
     };
 
 
     sendMessage(message) {
-        let ws = this.setupSocket();
+        let ws = getSocket();
         ws.send(message);
     };
 
 }
 
-export default WebSocketController;
+let socket;
+
+export const setSocket = () => {
+   socket = new WebSocketController(new WebSocket(`${URL}:${PORT}`)).setupSocket();
+}
+
+export const getSocket = () => {
+    if(socket === undefined) {
+        setSocket();
+    }
+    return socket;
+};

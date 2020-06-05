@@ -1,28 +1,28 @@
 package com.ainur.broker.storages;
 
-import com.ainur.broker.models.messages.Message;
+import com.ainur.broker.models.socketMessages.data.ReceivedMessage;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class MessagesStorage {
-    private BlockingQueue<Message> messages;
+    private BlockingQueue<ReceivedMessage> receivedMessages;
     private static MessagesStorage messagesStorage;
 
     private MessagesStorage() {
-        messages = new ArrayBlockingQueue<>(1024);
+        receivedMessages = new ArrayBlockingQueue<>(1024);
     }
 
-    public Message takeMessage() throws InterruptedException {
-        return messages.take();
+    public ReceivedMessage takeMessage() throws InterruptedException {
+        return receivedMessages.take();
     }
 
-    public void addMessage(Message message) {
-        messages.add(message);
+    public void addMessage(ReceivedMessage receivedMessage) {
+        receivedMessages.add(receivedMessage);
     }
 
-    public BlockingQueue<Message> getMessages() {
-        return messages;
+    public BlockingQueue<ReceivedMessage> getReceivedMessages() {
+        return receivedMessages;
     }
 
     public static MessagesStorage getMessagesStorage() {

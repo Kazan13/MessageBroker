@@ -1,5 +1,5 @@
-const URL = 'http://localhost';
-const PORT = '8080';
+const URL = 'http://ec2-3-87-201-249.compute-1.amazonaws.com';
+const PORT = '8081';
 
 /**
  * Запрос на подверждение правильности токена
@@ -56,6 +56,18 @@ export const logOut = (token) => {
  */
 export const getUserChannels = (token) => {
     return fetch(`${URL}:${PORT}/get-user-channels`, {
+        method: 'POST',
+        body: JSON.stringify({'token': token})
+    })
+};
+
+/**
+ * Запрос истории сообщений
+ * @param token
+ * @returns {Promise<Response>}
+ */
+export const getMessages = (token) => {
+    return fetch(`${URL}:${PORT}/get-messages`, {
         method: 'POST',
         body: JSON.stringify({'token': token})
     })

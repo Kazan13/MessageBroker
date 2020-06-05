@@ -19,4 +19,4 @@ export const getCookie = (cname) => {
         }
     }
     return "";
-}
+};

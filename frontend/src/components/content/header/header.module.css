@@ -1,49 +1,63 @@
 .header {
-    background-color: #ffffff;
-    height: 15vh;
-    width: 70vw;
-    margin: 0 auto;
-
+    background-color: #00a4e4;
+    height: 5em;
+    width: 70em;
+    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
 }
 
 .buttons {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1em;;
 }
 
-.channelsButtons {
-    display: flex;
-    flex-direction: row;
-    /*justify-content: left;*/
-}
 
 .addChannelButton {
-    text-align: center;
-    font-size: 7vh;
-    margin-right: 0;
-    background: #3674FF;
-    height: 8vh;
-    width: 4vw;
-    border-radius: 15vh;
-    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5em;
+    height: 2em;
+    border-radius: 0.3em;
+    background: rgba(229, 222, 222, 0.48);
 }
 
+.addChannelButton:hover {
+    box-shadow: 0.5em 0.2em 1em 0 rgba(91, 91, 91, 0.7);
+    cursor: pointer;
+}
 .searchChannelsButton {
-    font-size: 2vh;
-    margin-left: 0;
-    background-color: #3674FF;
-    height: 3vh;
-    width: 10vw;
-    border-radius: 4px;
-    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5em;
+
+    height: 2em;
+    border-radius: 0.3em;
+    background: rgba(229, 222, 222, 0.48);
+
+}
+
+.searchChannelsButton:hover {
+    cursor: pointer;
 }
 
 .logOutButton{
-    margin-left: auto;
-    background-color: crimson;
-    height: 3vh;
-    width: 10vw;
-    border-radius: 4px;
-    box-shadow: 0.5vh 0.2vw 2vh 0 #64937D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5em;
+
+    height: 2em;
+    border-radius: 0.3em;
+    background: rgba(229, 222, 222, 0.48);
+
+}
+
+.logOutButton:hover {
+    cursor: pointer;
 }

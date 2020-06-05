@@ -2,41 +2,45 @@ import React, {useState} from "react";
 import styles from "./dialog.module.css"
 import {connect} from "react-redux";
 import {sendMessageAction} from "../../../redux/actions/ws-actions";
+import Messages from "./messages/messages";
 
 const Dialog = (props) => {
-
-
     let [messageInput, changeMessage] = useState(undefined);
 
     const createNewMessage = () => {
+        if (messageInput.value === '')
+            return;
 
-        console.log( props.token + ' ' +  props.channelId + '' + messageInput.value + ' ' + new Date())
-
-        const newMessage = {
+        const data = {
             token: props.token,
             channelId: props.channelId,
             message: messageInput.value,
             date: Date.now()
         };
 
-        props.sendMessage(newMessage);
+        let PUBLISH = 'PUBLISH';
+        const receivedMessage = {
+            type: PUBLISH,
+            data: JSON.stringify(data)
+        }
+
+        props.sendMessage(receivedMessage);
         messageInput.value = '';
     }
 
     return (
         <div className={styles.dialog}>
-            <div className={styles.messages}>
 
-            </div>
+                <Messages/>
 
             <div className={styles.messageInputForm}>
                 <div>
                     <input className={styles.messageInput}
-                        type="text"
-                        placeholder="message"
-                        ref={(input => {
-                            changeMessage(input);
-                        })}/>
+                           type="text"
+                           placeholder="receivedMessage"
+                           ref={(input => {
+                               changeMessage(input);
+                           })}/>
                 </div>
                 <div className={styles.inputButton}>
                     <div onClick={() => {
@@ -48,7 +52,7 @@ const Dialog = (props) => {
             </div>
         </div>
     )
-}
+};
 
 
 export default connect(
@@ -57,8 +61,8 @@ export default connect(
         channelId: state.messenger.currentChannel,
     }),
     dispatch => ({
-        sendMessage: (message) => {
-            dispatch(sendMessageAction(message))
+        sendMessage: (receivedMessage) => {
+            dispatch(sendMessageAction(receivedMessage))
         }
     })
 )(Dialog);
