@@ -15,22 +15,22 @@ const Header = (props) => {
     return (
         <header className={styles.header}>
             <div className={styles.buttons}>
-                <div className={styles.leftButtons}>
-                    <div className={styles.searchChannelsButton} onClick={() => {
-                        props.onSearchChannelWindow(props.token.token)
-                    }}>Search
-                    </div>
 
-                    <div className={styles.addChannelButton} onClick={() => {
-                        props.onCreateChannelWindow()
-                    }}>+
-                    </div>
+                <div className={styles.searchChannelsButton} onClick={() => {
+                    props.onSearchChannelWindow(props.token.token)
+                }}><p>Search</p>
                 </div>
-                <div className={styles.rightButtons}>
-                    <div className={styles.logOutButton} onClick={() => {
-                        props.onLogOut(props.token)
-                    }}>Log Out
-                    </div>
+
+                <div className={styles.addChannelButton} onClick={() => {
+                    props.onCreateChannelWindow()
+                }}><p>New Channel</p>
+                </div>
+
+
+                <div className={styles.logOutButton} onClick={() => {
+                    props.onLogOut(props.token)
+                }}> <p>Log Out</p>
+
                 </div>
             </div>
         </header>

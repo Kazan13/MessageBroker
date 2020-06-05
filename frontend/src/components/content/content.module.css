@@ -1,19 +1,9 @@
 .content {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 70vw;
-    height: 78vh;
-    margin: 0 auto;
-    background-color: #ffffff;
-}
-
-.line {
-    left: 32.57%;
-    right: 67.36%;
-    top: 0;
-    bottom: -0.1%;
-
-    background: #FFFFFF;
-    border: 1px solid rgba(230, 233, 237, 0.4);
+    margin: 1em 0 1em 0;
+    width: 70em;
+    height: 40em;
+    background-color: #00a4e4;
+    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
 }

@@ -17,8 +17,8 @@ const ThisUserMessage = (props) => {
             </div>
 
             <div className={styles.messageImg}>
-                <div className={styles.img}>
-                    <img src="https://i.ibb.co/YywFDHg/2020-05-04-22-39-01.jpg" alt="img" border="0"/>
+                <div className={styles.name}>
+                    <p>AP</p>
                 </div>
 
                 <div className={styles.messageText}>

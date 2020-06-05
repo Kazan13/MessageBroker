@@ -9,17 +9,18 @@ import SearchChannelsWindow from "../content/channels/searchChannelsWindow/searc
 import BackgroundLayer from "../loading-window/background-layer/background-layer";
 
 const Messenger = (props) => {
-    let messengerVisibleStyle = props.messenger ? {display: 'block'} : {display: 'none'};
+    let messengerVisibleStyle = props.messenger ? {display: 'flex'} : {display: 'none'};
 
     return (
-        <div style={messengerVisibleStyle}>
+        <div style={messengerVisibleStyle} className={styles.messenger}>
             <BackgroundLayer/>
             <SearchChannelsWindow/>
             <CreateChannelWindow/>
-            <Header/>
-            <div className={styles.line}/>
-            <Content/>
-            <Footer/>
+            <div className={styles.page}>
+                <Header/>
+                <Content/>
+                <Footer/>
+            </div>
         </div>
     )
 };

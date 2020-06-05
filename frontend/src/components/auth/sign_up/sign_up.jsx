@@ -14,7 +14,7 @@ const SignUp = (props) => {
         <div style={layerVisibleStyle} className={styles.signUpPage}>
             <div className={styles.container}>
                 <div className={styles.title}>Регистрация</div>
-                <div className={styles.title2}>Для входа в приложение, вам нужно зарегистрироваться</div>
+                <div className={styles.subTitle}>Для входа в приложение, вам нужно зарегистрироваться</div>
                 <div className={styles.form}>
                     <div className={styles.input}>
                         <input className={styles.usernameInput}

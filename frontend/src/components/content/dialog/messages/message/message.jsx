@@ -17,9 +17,8 @@ const Message = (props) => {
             </div>
 
             <div className={styles.messageImg}>
-                <div className={styles.img}>
-                    <img src="https://sun9-18.userapi.com/c848520/v848520144/155526/wuo2Mf5s_MI.jpg" alt="img"
-                         border="0"/>
+                <div className={styles.name}>
+                   <p>DT</p>
                 </div>
 
                 <div className={styles.messageText}>

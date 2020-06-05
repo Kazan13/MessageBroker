@@ -1,7 +1,8 @@
 .channels {
+    padding: 0.5em;
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
-    width: 30vw;
+    /*max-height: 80em;*/
+    width: 19em;
     overflow: auto;
 }

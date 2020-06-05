@@ -1,72 +1,63 @@
 .header {
-    background-color: #ffffff;
-    height: 15vh;
-    width: 70vw;
-    margin: 0 auto;
-
+    background-color: #00a4e4;
+    height: 5em;
+    width: 70em;
+    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
 }
 
 .buttons {
     display: flex;
     flex-direction: row;
-}
-
-.leftButtons {
-    bottom: 0;
-    display: flex;
-}
-
-.rightButtons {
-    width: 35em;
+    justify-content: space-between;
+    margin: 1em;;
 }
 
 
 .addChannelButton {
-    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 6vh;
-    margin: 13vh 0 0 4vw;
-    width: 7vh;
-    height: 7vh;
-    border-radius: 50%;
-    background: rgba(229, 222, 222, 0.9);
-    box-shadow: 0.5vh 0.2vw 2vh 0 rgba(91, 91, 91, 0.7);
-    cursor: pointer;
+
+    padding: 0.5em;
+    height: 2em;
+    border-radius: 0.3em;
+    background: rgba(229, 222, 222, 0.48);
 }
 
 .addChannelButton:hover {
-    box-shadow: 0.5vh 0.2vw 1vh 0 rgba(91, 91, 91, 0.7);
+    box-shadow: 0.5em 0.2em 1em 0 rgba(91, 91, 91, 0.7);
+    cursor: pointer;
 }
 .searchChannelsButton {
-    text-align: center;
-    font-size: 2vh;
-    margin: 1vh 0 0 3vw;
-    height: 4vh;
-    width: 5vw;
-    border-radius: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5em;
+
+    height: 2em;
+    border-radius: 0.3em;
     background: rgba(229, 222, 222, 0.48);
-    box-shadow: 0.5vh 0.2vw 2vh 0 rgba(91, 91, 91, 0.7);
-    cursor: pointer;
+
 }
 
 .searchChannelsButton:hover {
-    box-shadow: 0.5vh 0.2vw 1vh 0 rgba(91, 91, 91, 0.7);
-}
-
-.logOutButton{
-    text-align: center;
-    font-size: 2vh;
-    margin: 1vh 0 0 47vw;
-    height: 3vh;
-    width: 5vw;
-    border-radius: 1vh;
-    background: rgba(229, 222, 222, 0.48);
-    box-shadow: 0.5vh 0.2vw 2vh 0 rgba(91, 91, 91, 0.7);
     cursor: pointer;
 }
 
+.logOutButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5em;
+
+    height: 2em;
+    border-radius: 0.3em;
+    background: rgba(229, 222, 222, 0.48);
+
+}
+
 .logOutButton:hover {
-    box-shadow: 0.5vh 0.2vw 1vh 0 rgba(91, 91, 91, 0.7);
+    cursor: pointer;
 }

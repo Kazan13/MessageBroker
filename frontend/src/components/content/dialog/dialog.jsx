@@ -30,18 +30,17 @@ const Dialog = (props) => {
 
     return (
         <div className={styles.dialog}>
-            <div className={styles.messages}>
-                <Messages />
-            </div>
+
+                <Messages/>
 
             <div className={styles.messageInputForm}>
                 <div>
                     <input className={styles.messageInput}
-                        type="text"
-                        placeholder="receivedMessage"
-                        ref={(input => {
-                            changeMessage(input);
-                        })}/>
+                           type="text"
+                           placeholder="receivedMessage"
+                           ref={(input => {
+                               changeMessage(input);
+                           })}/>
                 </div>
                 <div className={styles.inputButton}>
                     <div onClick={() => {
