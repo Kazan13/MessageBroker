@@ -4,6 +4,9 @@ import {connect} from "react-redux";
 import {Types} from "../../../redux/action-types/action-types";
 import {logOutAction} from "../../../redux/actions/auth-actions";
 import {getAllChannelsAction} from "../../../redux/actions/channels-actions";
+import {Box} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
 
 /**
  *
@@ -13,27 +16,39 @@ import {getAllChannelsAction} from "../../../redux/actions/channels-actions";
  */
 const Header = (props) => {
     return (
-        <header className={styles.header}>
-            <div className={styles.buttons}>
-
-                <div className={styles.searchChannelsButton} onClick={() => {
-                    props.onSearchChannelWindow(props.token.token)
-                }}><p>Search</p>
-                </div>
-
-                <div className={styles.addChannelButton} onClick={() => {
-                    props.onCreateChannelWindow()
-                }}><p>New Channel</p>
-                </div>
+        <div className={styles.header}>
+            <Box className={styles.buttons}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.searchChannelsButton}
+                    onClick={() => {
+                        props.onSearchChannelWindow(props.token.token)
+                    }}><p>Search</p>
+                </Button>
 
 
-                <div className={styles.logOutButton} onClick={() => {
-                    props.onLogOut(props.token)
-                }}> <p>Log Out</p>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.addChannelButton}
+                    onClick={() => {
+                        props.onCreateChannelWindow()
+                    }}><p>New Channel</p>
+                </Button>
 
-                </div>
-            </div>
-        </header>
+
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    className={styles.logOutButton}
+                    onClick={() => {
+                        props.onLogOut(props.token)
+                    }}><p>Log Out</p>
+
+                </Button>
+            </Box>
+        </div>
     );
 }
 

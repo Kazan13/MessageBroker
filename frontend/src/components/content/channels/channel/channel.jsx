@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./channel.module.css"
 import {connect} from "react-redux";
 import {Types} from "../../../../redux/action-types/action-types";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
 
 /**
  * Канал для списка каналов
@@ -13,8 +15,8 @@ const Channel = (props) => {
     return (
         <div className={styles.channel}
              onClick={() => props.onCurrentChannel(props.channel.id)}>
-            <div className={styles.img}>
-                <img src="https://i.ibb.co/YywFDHg/2020-05-04-22-39-01.jpg" alt="img" border="0"/>
+            <div className={styles.avatar}>
+                <div >{props.channel.channelName.charAt(0)+props.channel.channelName.charAt(1)}</div>
             </div>
             <div className={styles.channelName}>
                 {props.channel.channelName}

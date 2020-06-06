@@ -88,6 +88,7 @@ export const subscribeAction = (subscribeMessage) => dispatch => {
     }).catch(err => {
         alert("Не удалось подписаться на канал");
         dispatch({type: Types.HIDE_SEARCH_CHANNEL_WINDOW});
+        dispatch({type: Types.HIDE_BG_LAYER})
         console.log(err)
     });
 };

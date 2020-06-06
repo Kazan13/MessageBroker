@@ -19,16 +19,16 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = "com.ainur")
 @PropertySource("classpath:db.properties")
 public class AppConfig {
-    @Value("${broker.db.url}")
+    @Value("${calendar.db.url}")
     String url;
 
-    @Value("${broker.db.username}")
+    @Value("${calendar.db.username}")
     String username;
 
-    @Value("${broker.db.password}")
+    @Value("${calendar.db.password}")
     String password;
 
-    @Value("${broker.db.driver-class-name}")
+    @Value("${calendar.db.driver-class-name}")
     String driverClassName;
     @Autowired
     private BeanFactory beanFactory;

@@ -3,6 +3,7 @@ import styles from "./dialog.module.css"
 import {connect} from "react-redux";
 import {sendMessageAction} from "../../../redux/actions/ws-actions";
 import Messages from "./messages/messages";
+import Button from "@material-ui/core/Button";
 
 const Dialog = (props) => {
     let [messageInput, changeMessage] = useState(undefined);
@@ -42,13 +43,16 @@ const Dialog = (props) => {
                                changeMessage(input);
                            })}/>
                 </div>
-                <div className={styles.inputButton}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.inputButton}>
                     <div onClick={() => {
                         createNewMessage();
                     }}>
                         Send
                     </div>
-                </div>
+                </Button>
             </div>
         </div>
     )
