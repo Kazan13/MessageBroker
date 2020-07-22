@@ -2,7 +2,7 @@ import {store} from "./../redux/store";
 import {Types} from "./../redux/action-types/action-types";
 import {getCookie} from "../redux/getCookie";
 
-let URL = 'ws://ec2-3-87-201-249.compute-1.amazonaws.com';
+let URL = 'ws://ec2-3-92-184-105.compute-1.amazonaws.com';
 let PORT = '8090';
 
 class WebSocketController  {

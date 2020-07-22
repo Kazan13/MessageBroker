@@ -1,5 +1,8 @@
 .dialog {
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     width: 51em;
 }
 
@@ -32,4 +35,8 @@
 
 .inputButton:hover {
     cursor: pointer;
+}
+
+.dialog h3{
+
 }

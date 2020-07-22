@@ -1,35 +1,32 @@
 
 .message {
-    margin: 1em 23em 0 0;
+    margin: 1em 35em 0 0;
     padding: 0 0 0.5em 0;
     float: left;
     width: max-content;
-    max-width: 23em;
+    max-width: 35em;
     min-width: 15em;
     background: rgb(74, 136, 246);
     border-radius: 0.3em;
 }
 
 .messageInf {
-    font-size: 0.7em;
+    font-size: 0.8em;
     display: flex;
     flex-direction: row;
     position: relative;
     margin: 0.5em 0.5em 0.3em 0;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .senderName {
     margin: 0 0 0 2em;
-    color: #000000;
-    opacity: 50%;
 }
 
 .sentTime {
     position: absolute;
     right: 0;
     margin: 0 1em 0 1em;
-    color: #000000;
-    opacity: 50%;
 }
 
 .messageImg {

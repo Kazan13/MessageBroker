@@ -6,6 +6,9 @@ import Messages from "./messages/messages";
 import Button from "@material-ui/core/Button";
 
 const Dialog = (props) => {
+    let visibleStyle = props.channelId ? {display: 'flex'} : {display: 'none'};
+    let visibleStyleImg = !props.channelId ? {display: 'flex'} : {display: 'none'};
+
     let [messageInput, changeMessage] = useState(undefined);
 
     const createNewMessage = () => {
@@ -27,33 +30,37 @@ const Dialog = (props) => {
 
         props.sendMessage(receivedMessage);
         messageInput.value = '';
-    }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // prevent browser behavior
+        createNewMessage();
+
+    };
 
     return (
         <div className={styles.dialog}>
+            <h3 style={visibleStyleImg}>Создайте чат или зайдите в существующий</h3>
 
-                <Messages/>
+            <Messages/>
 
-            <div className={styles.messageInputForm}>
-                <div>
-                    <input className={styles.messageInput}
-                           type="text"
-                           placeholder="receivedMessage"
-                           ref={(input => {
-                               changeMessage(input);
-                           })}/>
-                </div>
+            <form style={visibleStyle} className={styles.messageInputForm}
+                  onSubmit={handleSubmit}>
+
+                <input type="text"
+                       placeholder="Message..."
+                       ref={(input => {
+                           changeMessage(input);
+                       })}/>
+
                 <Button
+                    type="submit"
                     variant="contained"
                     color="primary"
                     className={styles.inputButton}>
-                    <div onClick={() => {
-                        createNewMessage();
-                    }}>
-                        Send
-                    </div>
+                    Send
                 </Button>
-            </div>
+            </form>
         </div>
     )
 };

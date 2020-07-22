@@ -8,22 +8,22 @@ const Messages = (props) => {
     const divRef = useRef(null);
 
     useEffect(() => {
-        divRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        divRef.current.scrollIntoView({behavior: 'smooth'});
     });
 
     return (
-            <div className={styles.messages}>
-                {props.messages.map((receivedMessage, index) => {
-                        if (receivedMessage.senderId === props.id)
-                            return <ThisUserMessage key={index} receivedMessage={receivedMessage}/>;
-                        return <Message key={index} receivedMessage={receivedMessage}/>;
+        <div className={styles.messages}>
 
-                    }
-                )}
+            {props.messages.map((receivedMessage, index) => {
+                    if (receivedMessage.senderId === props.id)
+                        return <ThisUserMessage key={index} receivedMessage={receivedMessage}/>;
+                    return <Message key={index} receivedMessage={receivedMessage}/>;
 
-                <div  ref={divRef} />
-            </div>
+                }
+            )}
 
+            <div className={styles.scroll} ref={divRef}/>
+        </div>
 
 
     )

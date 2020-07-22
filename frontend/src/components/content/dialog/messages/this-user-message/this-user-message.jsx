@@ -18,7 +18,7 @@ const ThisUserMessage = (props) => {
 
             <div className={styles.messageImg}>
                 <div className={styles.avatar}>
-                    <div >{props.receivedMessage.senderName.charAt(0)+props.receivedMessage.senderName.charAt(1)}</div>
+                    <div>{`${props.receivedMessage.senderName.charAt(0)}${props.receivedMessage.senderName.charAt(1)}`}</div>
                 </div>
 
                 <div className={styles.messageText}>
