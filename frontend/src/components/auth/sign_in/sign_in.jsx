@@ -36,6 +36,7 @@ const SignIn = (props) => {
                     </div>
                     <div>
                         <div className={styles.signInButton} onClick={() => {
+                            if (usernameInput&&passwordInput)
                             props.onSignIn({
                                 username: usernameInput,
                                 password: passwordInput

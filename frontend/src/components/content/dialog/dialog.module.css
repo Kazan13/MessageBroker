@@ -1,8 +1,8 @@
 .dialog {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
     width: 51em;
 }
 
@@ -17,30 +17,26 @@
 }
 
 .messageInputForm input {
-    margin: 0;
-    padding: 1em;
-    border: none;
-}
-
-.messageInput {
     height: 0.5em;
     width: 40em;
     border-radius: 4px;
     text-align: left;
+    margin: 0 1em 0 0;
+    padding: 1em;
+    background-color: rgba(245, 238, 238, 0.51);
+    border: 1px #cccccc solid;
 }
 
 .inputButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 0.5em;
+    height: 3em;
     padding: 1em;
-    width: 4em;
-    margin-left: .5em;
-    border-radius: 0.3em;
-    background-color: #4CA5FF;
+    margin: 0 0 0 1em;
 }
 
 .inputButton:hover {
     cursor: pointer;
+}
+
+.dialog h3{
+
 }

@@ -1,38 +1,32 @@
 
-.message{
-    display: flex;
-    flex-direction: column;
-
-    margin: 1em 0 0 0;
-    padding: 0 0 1em 0;
-
-
-
-    background: rgba(229, 222, 222, 0.48);
+.message {
+    margin: 1em 35em 0 0;
+    padding: 0 0 0.5em 0;
+    float: left;
+    width: max-content;
+    max-width: 35em;
+    min-width: 15em;
+    background: rgb(74, 136, 246);
     border-radius: 0.3em;
-    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
 }
 
 .messageInf {
-    font-size: 0.5em;
+    font-size: 0.8em;
     display: flex;
     flex-direction: row;
+    position: relative;
+    margin: 0.5em 0.5em 0.3em 0;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .senderName {
     margin: 0 0 0 2em;
-    font: 1.5em "Century Gothic", Futura, sans-serif;
-    color: #000000;
-    opacity: 50%;
-    text-shadow: 2em 6em 5em rgba(255, 255, 255, 0.4);
 }
 
 .sentTime {
-    margin: 0 0 0 1em;
-    font: 1.5em "Century Gothic", Futura, sans-serif;
-    color: #000000;
-    opacity: 50%;
-    text-shadow: 2em 6em 5em rgba(255, 255, 255, 0.4);
+    position: absolute;
+    right: 0;
+    margin: 0 1em 0 1em;
 }
 
 .messageImg {
@@ -43,16 +37,26 @@
 
 
 .messageText {
-    margin: 0 0 0 2em;
-    color: #000000;
+    margin: 0 2em 0 0;
+
+    color: #ffffff;
     text-shadow: 2em 6em 5em rgba(255, 255, 255, 0.4);
 }
 
 
-
-.name {
-    height: 100%;
+.avatar {
     display: flex;
     align-items: center;
+    justify-content: center;
 
+    margin: 0 0.5em;
+    width: 2em;
+    min-width: 2em;
+    height: 2em;
+
+    font-size: 1.2em;
+    border: 1px rgba(0, 0, 0, 0.2) solid;
+    background-color: rgba(215, 215, 215, 0.51);
+    border-radius: 50%;
+    text-transform: capitalize;
 }

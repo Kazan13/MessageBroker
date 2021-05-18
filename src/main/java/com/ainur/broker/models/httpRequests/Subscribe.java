@@ -3,7 +3,7 @@ package com.ainur.broker.models.httpRequests;
 
 public class Subscribe {
     private String token;
-    private String channelId;
+    private int channelId;
 
     public String getToken() {
         return token;
@@ -14,11 +14,11 @@ public class Subscribe {
     }
 
 
-    public String getChannelId() {
+    public int getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(String channelId) {
+    public void setChannelId(int channelId) {
         this.channelId = channelId;
     }
 }

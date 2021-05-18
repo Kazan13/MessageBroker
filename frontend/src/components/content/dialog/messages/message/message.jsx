@@ -17,8 +17,8 @@ const Message = (props) => {
             </div>
 
             <div className={styles.messageImg}>
-                <div className={styles.name}>
-                   <p>DT</p>
+                <div className={styles.avatar}>
+                    <div>{`${props.receivedMessage.senderName.charAt(0)}${props.receivedMessage.senderName.charAt(1)}`}</div>
                 </div>
 
                 <div className={styles.messageText}>

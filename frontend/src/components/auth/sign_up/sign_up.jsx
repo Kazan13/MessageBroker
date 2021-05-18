@@ -37,10 +37,11 @@ const SignUp = (props) => {
                     <div>
                         <div className={styles.signUpButton}
                              onClick={() => {
-                                 props.onSignUp({
-                                     username: usernameInput,
-                                     password: passwordInput
-                                 });
+                                 if (usernameInput)
+                                     props.onSignUp({
+                                         username: usernameInput,
+                                         password: passwordInput
+                                     });
                              }}>
                             Зарегистрироваться
                         </div>

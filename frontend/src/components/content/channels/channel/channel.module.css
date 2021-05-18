@@ -1,11 +1,12 @@
 .channel {
     display: flex;
     flex-direction: row;
-    width: 15vw;
-    min-height: 8vh;
-    margin: 0.8vh 1vw 0 1vw ;
-    border-radius: 0.3em;
-    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
+    align-items: center;
+
+    width: 17em;
+    height: 5em;
+    margin: 0.8em 1em 0 1em ;
+    border-bottom: 1px #e2dbdb solid;
 }
 
 .channel:hover {
@@ -17,18 +18,20 @@
 .channelName {
     display: flex;
     align-items: center;
-    font: 1em "Century Gothic", Futura, sans-serif;
-    padding: 0 5px;
+
 }
 
-.img {
-    height: 100%;
+.avatar {
     display: flex;
     align-items: center;
-}
+    justify-content: center;
 
-.img img{
-    width: 40px;
+    margin: 0 0.5em;
+    width: 3em;
+    height: 3em;
+
+    font-size: 1.2em;
+    border: 1px rgba(0, 0, 0, 0.2) solid;
+    background-color: rgba(215, 215, 215, 0.51);
     border-radius: 50%;
-    padding: 0 5px;
 }

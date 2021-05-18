@@ -1,9 +1,7 @@
 .content {
     display: flex;
     flex-direction: row;
-    margin: 1em 0 1em 0;
+    background-color: white;
     width: 70em;
-    height: 40em;
-    background-color: #00a4e4;
-    box-shadow: 0.3em 0.3em 0.4em 0 rgb(0, 0, 0);
+    height: 42em;
 }

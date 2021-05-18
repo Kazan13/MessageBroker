@@ -31,28 +31,28 @@ public class MySQLRepository {
 
     private static final String CREATE_USERS_TABLE =
             "CREATE TABLE if not exists users " +
-                    "(id int AUTO_INCREMENT not null PRIMARY KEY, " +
+                    "(id serial PRIMARY KEY, " +
                     "username varchar (30) not null, " +
                     "password varchar (30) not null);";
     private static final String CREATE_CHANNELS_TABLE =
             "CREATE TABLE if not exists channels " +
-                    "(id int AUTO_INCREMENT not null PRIMARY KEY," +
+                    "(id serial not null PRIMARY KEY," +
                     "channel varchar (30) not null," +
-                    "admin_id int not null," +
+                    "admin_id integer not null," +
                     "FOREIGN KEY (admin_id) REFERENCES users(id) );";
     private static final String CREATE_SUBSCRIPTIONS_TABLE =
             "CREATE TABLE if not exists subscriptions " +
-                    "(subscriber_id int not null," +
-                    "channel_id int not null," +
+                    "(subscriber_id integer not null," +
+                    "channel_id integer not null," +
                     "FOREIGN KEY (subscriber_id) REFERENCES users(id), " +
                     "FOREIGN KEY (channel_id) REFERENCES channels(id) );";
     private static final String CREATE_MESSAGES_TABLE =
             "CREATE TABLE if not exists messages " +
-                    "(id int AUTO_INCREMENT NOT NULL  PRIMARY KEY," +
+                    "(id serial NOT NULL  PRIMARY KEY," +
                     "sent_time timestamp not null," +
                     "message TEXT not null," +
-                    "sender_id int not null," +
-                    "channel_id int not null," +
+                    "sender_id integer not null," +
+                    "channel_id integer not null," +
                     "FOREIGN KEY (sender_id) REFERENCES users(id), " +
                     "FOREIGN KEY (channel_id) REFERENCES channels(id) );";
 
@@ -497,9 +497,9 @@ public class MySQLRepository {
 
         Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_CHANNEL_BY_ID);
-        preparedStatement.setString(1, subscribe.getChannelId());
+        preparedStatement.setInt(1, subscribe.getChannelId());
         ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next() && !isUserSubscribedToChannel(userId, Integer.parseInt(subscribe.getChannelId()))) {
+        if (resultSet.next() && !isUserSubscribedToChannel(userId, subscribe.getChannelId())) {
             int channelId = Integer.parseInt(resultSet.getString(1));
             preparedStatement = connection.prepareStatement(INSERT_SUBSCRIPTION);
             preparedStatement.setInt(1, userId);
